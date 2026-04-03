@@ -2,7 +2,7 @@ name: Build Android APK
 
 on:
   push:
-    branches: [ "main" ] # ඔයාගේ branch එක master නම් 'master' කියලා වෙනස් කරන්න
+    branches: [ "main" ]
   workflow_dispatch: 
 
 jobs:
@@ -27,7 +27,15 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Install Capacitor and Ionic CLI
+      - name: Prepare Web Directory
+        run: |
+          # Capacitor වලට අවශ්‍ය 'www' folder එක සාදා index.html එක ඒ තුළට දමයි
+          mkdir www
+          cp index.html www/
+          # වෙනත් images හෝ files තිබේ නම් ඒවාද copy කරගැනීමට මෙය භාවිතා කළ හැක:
+          # cp -r assets www/ 2>/dev/null || true
+
+      - name: Install Capacitor
         run: |
           npm init -y
           npm install @capacitor/core @capacitor/android
@@ -35,14 +43,14 @@ jobs:
 
       - name: Initialize Capacitor
         run: |
-          # App එකේ නම "Cruiser" ලෙස සහ Package Name එක වෙනස් කර ඇත
-          npx cap init "Cruiser" "com.cruiser.app" --web-dir . 
+          # web-dir එක 'www' ලෙස ලබා දී ඇත
+          npx cap init "Cruiser" "com.cruiser.app" --web-dir www
 
       - name: Add Android Platform
         run: |
           npx cap add android
 
-      - name: Sync Web Code to Android
+      - name: Sync and Copy Assets
         run: |
           npx cap sync android
 
@@ -55,5 +63,5 @@ jobs:
       - name: Upload APK as Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug
+          name: Cruiser-App
           path: android/app/build/outputs/apk/debug/app-debug.apk
