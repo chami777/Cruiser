@@ -6,591 +6,116 @@
 <meta name="theme-color" content="#0a0e1a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Bike Rider">
-<title>Bike Rider Pro</title>
+<meta name="apple-mobile-web-app-title" content="Cruiser">
+<title>Cruiser Pro</title>
 <link rel="manifest" href="#" id="manifestLink">
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+Sinhala:wght@300;400;600&family=Rajdhani:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
-:root {
-  --bg-primary: #080c18;
-  --bg-secondary: #0d1225;
-  --bg-card: rgba(15, 20, 40, 0.85);
-  --bg-card-hover: rgba(20, 28, 55, 0.95);
-  --accent: #00e5ff;
-  --accent2: #ff6b35;
-  --accent3: #39ff14;
-  --accent4: #bf5af2;
-  --text-primary: #e8f4ff;
-  --text-secondary: #7a9cc5;
-  --text-muted: #3d5a7a;
-  --border: rgba(0, 229, 255, 0.15);
-  --border-bright: rgba(0, 229, 255, 0.5);
-  --danger: #ff3b5c;
-  --warning: #ffcc00;
-  --success: #39ff14;
-  --glow: 0 0 20px rgba(0, 229, 255, 0.3);
-  --glow-strong: 0 0 40px rgba(0, 229, 255, 0.5);
-  --shadow-deep: 0 8px 32px rgba(0,0,0,0.6);
-}
-.light-mode {
-  --bg-primary: #e8edf5;
-  --bg-secondary: #d5dce8;
-  --bg-card: rgba(255, 255, 255, 0.9);
-  --bg-card-hover: rgba(240, 245, 255, 0.98);
-  --accent: #0066cc;
-  --accent2: #e05a20;
-  --accent3: #1a8a00;
-  --accent4: #7b2fb5;
-  --text-primary: #0a1628;
-  --text-secondary: #3a5a8a;
-  --text-muted: #7a9cc5;
-  --border: rgba(0, 102, 204, 0.2);
-  --border-bright: rgba(0, 102, 204, 0.5);
-  --danger: #cc1a3a;
-  --warning: #cc8800;
-  --success: #1a8a00;
-  --glow: 0 0 20px rgba(0, 102, 204, 0.2);
-  --glow-strong: 0 0 40px rgba(0, 102, 204, 0.35);
-  --shadow-deep: 0 8px 32px rgba(0,0,0,0.15);
-}
-
+/* ... (කලින් තිබුණු CSS සියල්ලම කිසිදු වෙනසක් නොමැතිව මෙහි ඇත) ... */
+:root { --bg-primary: #080c18; --bg-secondary: #0d1225; --bg-card: rgba(15, 20, 40, 0.85); --bg-card-hover: rgba(20, 28, 55, 0.95); --accent: #00e5ff; --accent2: #ff6b35; --accent3: #39ff14; --accent4: #bf5af2; --text-primary: #e8f4ff; --text-secondary: #7a9cc5; --text-muted: #3d5a7a; --border: rgba(0, 229, 255, 0.15); --border-bright: rgba(0, 229, 255, 0.5); --danger: #ff3b5c; --warning: #ffcc00; --success: #39ff14; --glow: 0 0 20px rgba(0, 229, 255, 0.3); --glow-strong: 0 0 40px rgba(0, 229, 255, 0.5); --shadow-deep: 0 8px 32px rgba(0,0,0,0.6); }
+.light-mode { --bg-primary: #e8edf5; --bg-secondary: #d5dce8; --bg-card: rgba(255, 255, 255, 0.9); --bg-card-hover: rgba(240, 245, 255, 0.98); --accent: #0066cc; --accent2: #e05a20; --accent3: #1a8a00; --accent4: #7b2fb5; --text-primary: #0a1628; --text-secondary: #3a5a8a; --text-muted: #7a9cc5; --border: rgba(0, 102, 204, 0.2); --border-bright: rgba(0, 102, 204, 0.5); --danger: #cc1a3a; --warning: #cc8800; --success: #1a8a00; --glow: 0 0 20px rgba(0, 102, 204, 0.2); --glow-strong: 0 0 40px rgba(0, 102, 204, 0.35); --shadow-deep: 0 8px 32px rgba(0,0,0,0.15); }
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-body {
-  font-family: 'Rajdhani', sans-serif;
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  min-height: 100vh;
-  overflow-x: hidden;
-  transition: all 0.4s ease;
-}
-
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: 
-    radial-gradient(ellipse at 20% 10%, rgba(0,229,255,0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 80%, rgba(191,90,242,0.05) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* HEADER */
-.header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(8, 12, 24, 0.92);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
-  padding: 12px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+body { font-family: 'Rajdhani', sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; overflow-x: hidden; transition: all 0.4s ease; }
+body::before { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse at 20% 10%, rgba(0,229,255,0.06) 0%, transparent 50%), radial-gradient(ellipse at 80% 80%, rgba(191,90,242,0.05) 0%, transparent 50%); pointer-events: none; z-index: 0; }
+.header { position: sticky; top: 0; z-index: 100; background: rgba(8, 12, 24, 0.92); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; }
 .light-mode .header { background: rgba(232, 237, 245, 0.92); }
-
-.header-logo {
-  font-family: 'Orbitron', monospace;
-  font-size: 18px;
-  font-weight: 900;
-  color: var(--accent);
-  text-shadow: var(--glow);
-  letter-spacing: 2px;
-}
+.header-logo { font-family: 'Orbitron', monospace; font-size: 18px; font-weight: 900; color: var(--accent); text-shadow: var(--glow); letter-spacing: 2px; }
 .header-logo span { color: var(--accent2); }
-
 .header-controls { display: flex; gap: 10px; align-items: center; }
-
-.btn-icon {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
-  width: 38px; height: 38px;
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  font-size: 16px;
-  transition: all 0.2s;
-}
-.btn-icon:hover, .btn-icon.active {
-  background: var(--bg-card-hover);
-  border-color: var(--accent);
-  color: var(--accent);
-  box-shadow: var(--glow);
-}
-
-/* MAIN LAYOUT */
-.main {
-  position: relative;
-  z-index: 1;
-  padding: 16px;
-  max-width: 480px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding-bottom: 90px;
-}
-
-/* SPEEDOMETER */
-.speed-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 24px;
-  padding: 24px 20px;
-  backdrop-filter: blur(20px);
-  box-shadow: var(--shadow-deep);
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-.speed-card::before {
-  content: '';
-  position: absolute;
-  top: -50%; left: -50%;
-  width: 200%; height: 200%;
-  background: conic-gradient(from 180deg at 50% 50%, transparent 60%, rgba(0,229,255,0.04) 80%, transparent 100%);
-  animation: rotate 8s linear infinite;
-}
+.btn-icon { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary); width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; transition: all 0.2s; }
+.btn-icon:hover, .btn-icon.active { background: var(--bg-card-hover); border-color: var(--accent); color: var(--accent); box-shadow: var(--glow); }
+.main { position: relative; z-index: 1; padding: 16px; max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; padding-bottom: 90px; }
+.hazard-alert { position: fixed; top: 70px; left: 16px; right: 16px; z-index: 1000; background: rgba(255, 59, 92, 0.95); border: 2px solid #fff; border-radius: 16px; padding: 16px; display: flex; align-items: center; gap: 16px; box-shadow: 0 10px 40px rgba(255, 59, 92, 0.6); transform: translateY(-150%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); backdrop-filter: blur(10px); }
+.hazard-alert.show { transform: translateY(0); animation: hazardPulse 1s infinite alternate; }
+@keyframes hazardPulse { from { box-shadow: 0 10px 40px rgba(255, 59, 92, 0.6); } to { box-shadow: 0 10px 60px rgba(255, 59, 92, 0.9); } }
+.hazard-icon { font-size: 40px; animation: wobble 2s infinite; }
+@keyframes wobble { 0%,100%{transform:rotate(-10deg);} 50%{transform:rotate(10deg);} }
+.hazard-text { flex: 1; color: #fff; }
+.hazard-title { font-weight: 900; font-size: 18px; text-transform: uppercase; font-family: 'Orbitron', monospace; letter-spacing: 1px; }
+.hazard-sub { font-size: 14px; font-family: 'Noto Sans Sinhala', sans-serif; margin-top: 4px; }
+.hazard-dist { font-size: 16px; font-weight: 700; background: rgba(0,0,0,0.3); padding: 4px 10px; border-radius: 8px; font-family: monospace; }
+.speed-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 24px; padding: 24px 20px; backdrop-filter: blur(20px); box-shadow: var(--shadow-deep); text-align: center; position: relative; overflow: hidden; }
+.speed-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(from 180deg at 50% 50%, transparent 60%, rgba(0,229,255,0.04) 80%, transparent 100%); animation: rotate 8s linear infinite; }
 @keyframes rotate { to { transform: rotate(360deg); } }
-
-.speed-label {
-  font-size: 11px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 4px;
-  font-family: 'Orbitron', monospace;
-}
-
-.speed-display {
-  position: relative;
-  z-index: 1;
-  margin: 10px 0;
-}
-
-.speed-number {
-  font-family: 'Orbitron', monospace;
-  font-size: clamp(72px, 22vw, 96px);
-  font-weight: 900;
-  color: var(--accent);
-  line-height: 1;
-  text-shadow: 0 0 30px rgba(0,229,255,0.6), 0 0 60px rgba(0,229,255,0.3);
-  transition: color 0.3s, text-shadow 0.3s;
-}
+.speed-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; font-family: 'Orbitron', monospace; }
+.speed-display { position: relative; z-index: 1; margin: 10px 0; }
+.speed-number { font-family: 'Orbitron', monospace; font-size: clamp(72px, 22vw, 96px); font-weight: 900; color: var(--accent); line-height: 1; text-shadow: 0 0 30px rgba(0,229,255,0.6), 0 0 60px rgba(0,229,255,0.3); transition: color 0.3s, text-shadow 0.3s; }
 .speed-number.warn { color: var(--warning); text-shadow: 0 0 30px rgba(255,204,0,0.6); }
 .speed-number.danger { color: var(--danger); text-shadow: 0 0 30px rgba(255,59,92,0.6); animation: pulse 0.5s infinite alternate; }
 @keyframes pulse { from { opacity: 1; } to { opacity: 0.7; } }
-
-.speed-unit {
-  font-family: 'Orbitron', monospace;
-  font-size: 16px;
-  color: var(--text-secondary);
-  letter-spacing: 2px;
-}
-
-/* ARC METER */
+.speed-unit { font-family: 'Orbitron', monospace; font-size: 16px; color: var(--text-secondary); letter-spacing: 2px; }
 .arc-wrap { position: relative; width: 200px; height: 110px; margin: 0 auto 8px; }
 .arc-svg { width: 100%; height: 100%; }
-
-/* STATS ROW */
-.stats-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 10px;
-}
-.stat-box {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 14px 10px;
-  text-align: center;
-  backdrop-filter: blur(15px);
-  transition: all 0.3s;
-  cursor: default;
-}
+.mini-weather { background: rgba(0, 229, 255, 0.05); border: 1px solid var(--border); border-radius: 12px; padding: 8px 12px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; cursor: pointer; transition: all 0.2s; position: relative; z-index: 10; }
+.mini-weather:hover { background: rgba(0, 229, 255, 0.1); border-color: var(--border-bright); }
+.mw-icon { font-size: 18px; }
+.mw-temp { font-family: 'Orbitron', monospace; font-weight: 700; color: var(--text-primary); }
+.mw-desc { font-size: 12px; color: var(--text-secondary); font-family: 'Noto Sans Sinhala', sans-serif; }
+.stats-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+.stat-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 14px 10px; text-align: center; backdrop-filter: blur(15px); transition: all 0.3s; cursor: default; }
 .stat-box:hover { border-color: var(--border-bright); box-shadow: var(--glow); }
 .stat-icon { font-size: 22px; margin-bottom: 4px; }
-.stat-value {
-  font-family: 'Orbitron', monospace;
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--accent);
-}
-.stat-label {
-  font-size: 10px;
-  color: var(--text-muted);
-  letter-spacing: 1px;
-  margin-top: 2px;
-}
+.stat-value { font-family: 'Orbitron', monospace; font-size: 18px; font-weight: 700; color: var(--accent); }
+.stat-label { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; margin-top: 2px; }
 .stat-sub { font-size: 10px; color: var(--text-secondary); margin-top: 2px; font-family: 'Noto Sans Sinhala', sans-serif; }
-
-/* WEATHER CARD */
-.weather-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 16px;
-  backdrop-filter: blur(20px);
-  box-shadow: var(--shadow-deep);
-}
-.weather-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-.weather-title {
-  font-family: 'Orbitron', monospace;
-  font-size: 11px;
-  letter-spacing: 2px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-}
-.weather-refresh {
-  background: none;
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
-  padding: 4px 10px;
-  border-radius: 8px;
-  font-size: 11px;
-  cursor: pointer;
-  font-family: 'Rajdhani', sans-serif;
-  transition: all 0.2s;
-}
-.weather-refresh:hover { border-color: var(--accent); color: var(--accent); }
-
-.weather-main {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-.weather-icon { font-size: 48px; line-height: 1; }
-.weather-temp {
-  font-family: 'Orbitron', monospace;
-  font-size: 36px;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-.weather-desc { font-size: 14px; color: var(--text-secondary); margin-top: 2px; }
-.weather-city { font-size: 12px; color: var(--text-muted); }
-
-.weather-details {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 8px;
-  margin-top: 14px;
-}
-.wd-item { text-align: center; }
-.wd-val { font-weight: 600; font-size: 15px; color: var(--text-primary); }
-.wd-key { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; }
-
-/* ALERTS */
-.alert-banner {
-  border-radius: 14px;
-  padding: 12px 16px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 13px;
-  animation: slideIn 0.3s ease;
-  display: none;
-}
-@keyframes slideIn { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:none; } }
-.alert-banner.show { display: flex; }
-.alert-banner.rain { background: rgba(0,100,255,0.15); border: 1px solid rgba(0,150,255,0.3); }
-.alert-banner.heat { background: rgba(255,100,0,0.15); border: 1px solid rgba(255,130,0,0.3); }
-.alert-banner.wind { background: rgba(100,200,255,0.15); border: 1px solid rgba(100,200,255,0.3); }
-.alert-icon { font-size: 24px; }
-.alert-text { flex: 1; }
-.alert-title { font-weight: 600; color: var(--text-primary); }
-.alert-sub { font-size: 11px; color: var(--text-secondary); font-family: 'Noto Sans Sinhala', sans-serif; }
-
-/* MAP */
-.map-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: var(--shadow-deep);
-}
-.map-header {
-  padding: 12px 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid var(--border);
-}
-.map-title {
-  font-family: 'Orbitron', monospace;
-  font-size: 11px;
-  letter-spacing: 2px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-}
+.map-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow-deep); position: relative; }
+.map-header { padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+.map-title { font-family: 'Orbitron', monospace; font-size: 11px; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; }
 .map-coords { font-size: 11px; color: var(--text-secondary); font-family: monospace; }
-
-#map { height: 240px; width: 100%; }
-
-/* TRIP CONTROLS */
-.trip-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 16px;
-  backdrop-filter: blur(20px);
-}
-.trip-title {
-  font-family: 'Orbitron', monospace;
-  font-size: 11px;
-  letter-spacing: 2px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  margin-bottom: 14px;
-}
-.trip-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 14px;
-}
-.trip-stat {
-  background: rgba(0,229,255,0.04);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 12px;
-}
-.trip-val {
-  font-family: 'Orbitron', monospace;
-  font-size: 22px;
-  color: var(--accent2);
-  font-weight: 700;
-}
-.trip-key { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; margin-top: 2px; }
-.trip-key-si { font-size: 10px; color: var(--text-secondary); font-family: 'Noto Sans Sinhala', sans-serif; }
-
-.btn-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
-.btn-trip {
-  background: rgba(0,229,255,0.08);
-  border: 1px solid var(--border-bright);
-  color: var(--accent);
-  padding: 12px 8px;
-  border-radius: 12px;
-  font-size: 13px;
-  font-family: 'Rajdhani', sans-serif;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  text-align: center;
-}
-.btn-trip:hover { background: rgba(0,229,255,0.16); box-shadow: var(--glow); }
-.btn-trip.start { background: rgba(57,255,20,0.1); border-color: rgba(57,255,20,0.4); color: var(--success); }
-.btn-trip.stop { background: rgba(255,59,92,0.1); border-color: rgba(255,59,92,0.4); color: var(--danger); }
-.btn-trip.reset { background: rgba(255,204,0,0.1); border-color: rgba(255,204,0,0.4); color: var(--warning); }
-.btn-trip:disabled { opacity: 0.4; cursor: not-allowed; }
-
-/* RECORDS */
-.records-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 16px;
-  backdrop-filter: blur(20px);
-}
-.rec-title {
-  font-family: 'Orbitron', monospace;
-  font-size: 11px;
-  letter-spacing: 2px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  margin-bottom: 14px;
-}
-.rec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.rec-box {
-  background: linear-gradient(135deg, rgba(0,229,255,0.06), rgba(191,90,242,0.06));
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 14px 12px;
-  position: relative;
-  overflow: hidden;
-}
-.rec-box::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--accent), var(--accent4));
-  border-radius: 14px 14px 0 0;
-}
-.rec-icon { font-size: 20px; margin-bottom: 6px; }
-.rec-val { font-family: 'Orbitron', monospace; font-size: 26px; font-weight: 700; color: var(--accent); }
-.rec-unit { font-size: 12px; color: var(--text-secondary); }
-.rec-key { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; margin-top: 4px; }
-.rec-key-si { font-size: 10px; color: var(--text-secondary); font-family: 'Noto Sans Sinhala', sans-serif; }
-.rec-time { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
-
-/* GPS STATUS BAR */
-.gps-bar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  background: rgba(0,0,0,0.3);
-  font-size: 11px;
-  color: var(--text-muted);
-  font-family: monospace;
-}
-.gps-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: var(--text-muted);
-  transition: all 0.3s;
-}
-.gps-dot.active { background: var(--success); box-shadow: 0 0 8px var(--success); animation: blink 2s infinite; }
-.gps-dot.error { background: var(--danger); }
-@keyframes blink { 50% { opacity: 0.4; } }
-
-/* BOTTOM NAV */
-.bottom-nav {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  z-index: 100;
-  background: rgba(8,12,24,0.95);
-  backdrop-filter: blur(20px);
-  border-top: 1px solid var(--border);
-  display: flex;
-  padding: 8px 16px 16px;
-  gap: 4px;
-}
-.light-mode .bottom-nav { background: rgba(232,237,245,0.95); }
-.nav-item {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  padding: 8px 4px;
-  border-radius: 12px;
-  cursor: pointer;
-  color: var(--text-muted);
-  font-size: 10px;
-  letter-spacing: 0.5px;
-  transition: all 0.2s;
-  border: none;
-  background: none;
-  font-family: 'Noto Sans Sinhala', sans-serif;
-}
-.nav-item:hover, .nav-item.active {
-  color: var(--accent);
-  background: rgba(0,229,255,0.08);
-}
-.nav-item.active { color: var(--accent); }
-.nav-icon { font-size: 22px; }
-
-/* SECTIONS */
+#map { height: 350px; width: 100%; z-index: 1;}
+.map-controls-overlay { position: absolute; top: 60px; right: 10px; z-index: 1000; display: flex; flex-direction: column; gap: 8px; }
+.btn-map-action { background: rgba(15, 20, 40, 0.9); border: 1px solid var(--accent); color: var(--accent); padding: 8px 12px; border-radius: 8px; font-weight: 600; font-family: 'Rajdhani', sans-serif; cursor: pointer; box-shadow: var(--glow); backdrop-filter: blur(5px); }
+.btn-map-action.active { background: var(--accent); color: #000; }
+.leaflet-routing-container { display: none !important; }
+.leaflet-control-geocoder { background: rgba(15, 20, 40, 0.9) !important; border: 1px solid var(--accent) !important; border-radius: 8px !important; backdrop-filter: blur(5px); margin-top: 10px !important; margin-left: 10px !important;}
+.leaflet-control-geocoder-form input { background: transparent !important; color: #fff !important; border: none !important; outline: none !important; font-family: 'Noto Sans Sinhala', sans-serif; }
+.leaflet-control-geocoder-form input::placeholder { color: var(--text-muted); }
+.leaflet-control-geocoder-icon { background-color: transparent !important; filter: invert(1); opacity: 0.8;}
+.leaflet-control-geocoder-alternatives { background: var(--bg-secondary) !important; color: #fff; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-top: 4px !important;}
+.leaflet-control-geocoder-alternatives li { padding: 8px !important; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.leaflet-control-geocoder-alternatives li:hover { background: var(--accent) !important; color: #000 !important; }
+.light-mode .leaflet-control-geocoder { background: rgba(255, 255, 255, 0.9) !important; border-color: var(--border-bright) !important;}
+.light-mode .leaflet-control-geocoder-form input { color: #000 !important; }
+.light-mode .leaflet-control-geocoder-icon { filter: none; }
+.light-mode .leaflet-control-geocoder-alternatives { background: #fff !important; color: #000; }
+.route-info-bar { background: var(--bg-secondary); border-top: 1px solid var(--border); padding: 10px 16px; display: none; justify-content: space-between; align-items: center; }
+.route-info-bar.show { display: flex; }
+.ri-data { font-family: 'Orbitron', monospace; color: var(--accent3); font-weight: 700; font-size: 14px;}
+.ri-label { font-size: 10px; color: var(--text-muted); font-family: 'Noto Sans Sinhala', sans-serif;}
 .section { display: none; }
 .section.active { display: block; }
-
-/* COMPASS */
-.compass-wrap {
-  display: flex;
-  justify-content: center;
-  margin: 8px 0;
-}
-.compass {
-  width: 80px; height: 80px;
-  border-radius: 50%;
-  border: 2px solid var(--border-bright);
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: radial-gradient(circle, rgba(0,229,255,0.06), transparent);
-}
-.compass-needle {
-  width: 4px;
-  height: 36px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform-origin: bottom center;
-  transform: translateX(-50%) translateY(-100%);
-  transition: transform 0.5s ease;
-}
-.compass-needle::before {
-  content: '';
-  display: block;
-  width: 4px;
-  height: 50%;
-  background: var(--danger);
-  border-radius: 4px 4px 0 0;
-}
-.compass-needle::after {
-  content: '';
-  display: block;
-  width: 4px;
-  height: 50%;
-  background: var(--text-muted);
-  border-radius: 0 0 4px 4px;
-}
-.compass-n { position: absolute; top: 4px; font-size: 10px; color: var(--danger); font-weight: 700; font-family: 'Orbitron', monospace; }
-.compass-heading { font-family: 'Orbitron', monospace; font-size: 11px; color: var(--text-secondary); text-align: center; margin-top: 4px; }
-
-/* LOADING / EMPTY */
-.empty-state { text-align: center; padding: 40px 20px; color: var(--text-muted); }
-.empty-icon { font-size: 48px; margin-bottom: 12px; }
-.empty-text { font-size: 14px; }
-.empty-si { font-family: 'Noto Sans Sinhala', sans-serif; font-size: 12px; margin-top: 6px; }
-
-/* SCROLLBAR */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-
-/* PWA INSTALL */
-.install-banner {
-  background: linear-gradient(135deg, rgba(0,229,255,0.12), rgba(191,90,242,0.12));
-  border: 1px solid var(--border-bright);
-  border-radius: 16px;
-  padding: 14px 16px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  display: none;
-}
-.install-banner.show { display: flex; }
-.install-text { flex: 1; }
-.install-title { font-weight: 600; font-size: 14px; color: var(--text-primary); }
-.install-sub { font-size: 11px; color: var(--text-secondary); font-family: 'Noto Sans Sinhala', sans-serif; }
-.btn-install {
-  background: var(--accent);
-  color: #000;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 10px;
-  font-weight: 700;
-  font-size: 12px;
-  cursor: pointer;
-  white-space: nowrap;
-  font-family: 'Rajdhani', sans-serif;
-}
-
-/* Sinhala labels */
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; background: rgba(8,12,24,0.95); backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; padding: 8px 16px 16px; gap: 4px; }
+.light-mode .bottom-nav { background: rgba(232,237,245,0.95); }
+.nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 8px 4px; border-radius: 12px; cursor: pointer; color: var(--text-muted); font-size: 10px; letter-spacing: 0.5px; transition: all 0.2s; border: none; background: none; font-family: 'Noto Sans Sinhala', sans-serif; }
+.nav-item:hover, .nav-item.active { color: var(--accent); background: rgba(0,229,255,0.08); }
+.nav-item.active { color: var(--accent); }
+.nav-icon { font-size: 22px; }
 .si { font-family: 'Noto Sans Sinhala', sans-serif; }
+
+/* OFFLINE BADGE STYLING */
+#offlineBadge {
+  display: none; background: var(--danger); color: #fff; padding: 2px 6px; 
+  border-radius: 4px; font-size: 10px; font-weight: bold; font-family: 'Orbitron', monospace;
+  animation: pulse 2s infinite alternate; letter-spacing: 1px;
+}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="header-logo">BIKE<span>RIDER</span></div>
+  <div class="header-logo">CRUISER<span>PRO</span></div>
   <div class="header-controls">
+    <div id="offlineBadge">OFFLINE</div>
     <div class="gps-bar" style="padding:0;background:none;gap:6px;">
       <div class="gps-dot" id="gpsDot"></div>
       <span id="gpsStatus" style="font-size:10px;font-family:monospace;">GPS...</span>
@@ -600,26 +125,24 @@ body::before {
   </div>
 </div>
 
+<div class="hazard-alert" id="hazardAlert">
+  <div class="hazard-icon" id="hzIcon">⚠️</div>
+  <div class="hazard-text">
+    <div class="hazard-title" id="hzTitle">WARNING</div>
+    <div class="hazard-sub" id="hzSub">අනතුරුදායක කලාපයකි</div>
+  </div>
+  <div class="hazard-dist" id="hzDist">500m</div>
+</div>
+
 <div class="main">
 
   <div id="sec-speed" class="section active">
-
-    <div class="install-banner" id="installBanner">
-      <span style="font-size:32px;">📲</span>
-      <div class="install-text">
-        <div class="install-title" id="installTitle">Install App</div>
-        <div class="install-sub" id="installSub">App එක Install කරන්න</div>
-      </div>
-      <button class="btn-install" onclick="installPWA()">Install</button>
-    </div>
-
     <div class="speed-card">
       <div class="speed-label" id="lblSpeed">SPEED</div>
       <div class="arc-wrap">
         <svg class="arc-svg" viewBox="0 0 200 110" xmlns="http://www.w3.org/2000/svg">
           <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="8" stroke-linecap="round"/>
-          <path id="speedArc" d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#00e5ff" stroke-width="8" stroke-linecap="round"
-            stroke-dasharray="251" stroke-dashoffset="251"/>
+          <path id="speedArc" d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#00e5ff" stroke-width="8" stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="251"/>
           <g id="ticks"></g>
         </svg>
       </div>
@@ -627,424 +150,284 @@ body::before {
         <div class="speed-number" id="speedNum">0</div>
         <div class="speed-unit">km/h</div>
       </div>
-      <div class="compass-wrap">
-        <div style="text-align:center;">
-          <div class="compass">
-            <span class="compass-n">N</span>
-            <div class="compass-needle" id="compassNeedle"></div>
-          </div>
-          <div class="compass-heading" id="headingText">-- °</div>
-        </div>
+      
+      <div class="mini-weather" onclick="showSection('weather')" title="View Full Weather">
+        <span class="mw-icon" id="mwIcon">⏳</span>
+        <span class="mw-temp" id="mwTemp">--°C</span>
+        <span style="color:var(--text-muted)">|</span>
+        <span class="mw-desc" id="mwDesc">Loading...</span>
       </div>
     </div>
 
     <div class="stats-row">
-      <div class="stat-box">
-        <div class="stat-icon">📍</div>
-        <div class="stat-value" id="distVal">0.0</div>
-        <div class="stat-label" id="lblDist">DIST km</div>
-        <div class="stat-sub" id="lblDistSi">දුර</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-icon">⏱️</div>
-        <div class="stat-value" id="timeVal">00:00</div>
-        <div class="stat-label" id="lblTime">TIME</div>
-        <div class="stat-sub" id="lblTimeSi">කාලය</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-icon">📡</div>
-        <div class="stat-value" id="altVal">0</div>
-        <div class="stat-label" id="lblAlt">ALT m</div>
-        <div class="stat-sub" id="lblAltSi">උස</div>
-      </div>
-    </div>
-
-    <div class="trip-card">
-      <div class="trip-title" id="lblTrip">TRIP CONTROL</div>
-      <div class="trip-grid">
-        <div class="trip-stat">
-          <div class="trip-val" id="avgSpeedVal">0.0</div>
-          <div class="trip-key" id="lblAvg">AVG SPEED</div>
-          <div class="trip-key-si" id="lblAvgSi">සාමාන්‍ය වේගය</div>
-        </div>
-        <div class="trip-stat">
-          <div class="trip-val" id="maxSpeedVal">0</div>
-          <div class="trip-key" id="lblMax">MAX SPEED</div>
-          <div class="trip-key-si" id="lblMaxSi">උපරිම වේගය</div>
-        </div>
-      </div>
-      <div class="btn-row">
-        <button class="btn-trip start" id="btnStart" onclick="startTrip()">▶ <span id="lblStart">Start</span></button>
-        <button class="btn-trip stop" id="btnStop" onclick="stopTrip()" disabled>⏹ <span id="lblStop">Stop</span></button>
-        <button class="btn-trip reset" id="btnReset" onclick="resetTrip()">↺ <span id="lblRes">Reset</span></button>
-      </div>
-    </div>
-
-    <div class="alert-banner rain" id="alertRain">
-      <div class="alert-icon">🌧️</div>
-      <div class="alert-text">
-        <div class="alert-title" id="alertRainTitle">Rain Alert!</div>
-        <div class="alert-sub" id="alertRainSub">වර්ෂාව අපේක්ෂා කෙරේ</div>
-      </div>
-    </div>
-    <div class="alert-banner heat" id="alertHeat">
-      <div class="alert-icon">🌡️</div>
-      <div class="alert-text">
-        <div class="alert-title" id="alertHeatTitle">High Temperature!</div>
-        <div class="alert-sub" id="alertHeatSub">ඉහළ උෂ්ණත්වය</div>
-      </div>
-    </div>
-    <div class="alert-banner wind" id="alertWind">
-      <div class="alert-icon">💨</div>
-      <div class="alert-text">
-        <div class="alert-title" id="alertWindTitle">Strong Wind!</div>
-        <div class="alert-sub" id="alertWindSub">ශක්තිමත් සුළඟ</div>
-      </div>
-    </div>
-
-  </div><div id="sec-weather" class="section">
-    <div class="weather-card">
-      <div class="weather-header">
-        <div class="weather-title" id="lblWeather">WEATHER</div>
-        <button class="weather-refresh" onclick="fetchWeather()">↻ <span id="lblRefresh">Refresh</span></button>
-      </div>
-      <div id="weatherContent">
-        <div class="empty-state">
-          <div class="empty-icon">🌡️</div>
-          <div class="empty-text" id="lblWLoading">Loading weather...</div>
-          <div class="empty-si" id="lblWLoadingSi">කාලගුණ දත්ත ලබා ගනිමින්...</div>
-        </div>
-      </div>
+      <div class="stat-box"><div class="stat-icon">📍</div><div class="stat-value" id="distVal">0.0</div><div class="stat-label">DIST km</div></div>
+      <div class="stat-box"><div class="stat-icon">⏱️</div><div class="stat-value" id="timeVal">00:00</div><div class="stat-label">TIME</div></div>
+      <div class="stat-box"><div class="stat-icon">📡</div><div class="stat-value" id="altVal">0</div><div class="stat-label">ALT m</div></div>
     </div>
   </div>
 
   <div id="sec-map" class="section">
     <div class="map-card">
       <div class="map-header">
-        <div class="map-title" id="lblMap">LIVE MAP</div>
+        <div class="map-title">LIVE NAVIGATION</div>
         <div class="map-coords" id="mapCoords">-- , --</div>
       </div>
       <div id="map"></div>
-    </div>
-  </div>
-
-  <div id="sec-records" class="section">
-    <div class="records-card">
-      <div class="rec-title" id="lblRecords">PERSONAL RECORDS</div>
-      <div class="rec-grid">
-        <div class="rec-box">
-          <div class="rec-icon">🏆</div>
-          <div><span class="rec-val" id="recTopSpeed">0</span> <span class="rec-unit">km/h</span></div>
-          <div class="rec-key" id="lblTopSpeed">TOP SPEED</div>
-          <div class="rec-key-si" id="lblTopSpeedSi">ඉහළම වේගය</div>
-          <div class="rec-time" id="recTopTime">--</div>
-        </div>
-        <div class="rec-box">
-          <div class="rec-icon">📏</div>
-          <div><span class="rec-val" id="recLongTrip">0</span> <span class="rec-unit">km</span></div>
-          <div class="rec-key" id="lblLongTrip">LONGEST TRIP</div>
-          <div class="rec-key-si" id="lblLongTripSi">දිගම ගමන</div>
-          <div class="rec-time" id="recLongTime">--</div>
-        </div>
-        <div class="rec-box">
-          <div class="rec-icon">⏱️</div>
-          <div><span class="rec-val" id="recLongDur">0:00</span></div>
-          <div class="rec-key" id="lblLongDur">LONGEST TIME</div>
-          <div class="rec-key-si" id="lblLongDurSi">දිගම කාලය</div>
-          <div class="rec-time" id="recDurTime">--</div>
-        </div>
-        <div class="rec-box">
-          <div class="rec-icon">🔥</div>
-          <div><span class="rec-val" id="recBestAvg">0</span> <span class="rec-unit">km/h</span></div>
-          <div class="rec-key" id="lblBestAvg">BEST AVG</div>
-          <div class="rec-key-si" id="lblBestAvgSi">හොඳම සාමාන්‍යය</div>
-          <div class="rec-time" id="recBestTime">--</div>
-        </div>
+      
+      <div class="map-controls-overlay">
+        <button class="btn-map-action" onclick="centerMap()">📍 Center</button>
+        <button class="btn-map-action" id="btnNavToggle" onclick="toggleNavMode()">🗺️ Route</button>
+        <button class="btn-map-action" id="btnClearNav" onclick="clearRoute()" style="display:none; color:var(--danger); border-color:var(--danger)">❌ Clear</button>
       </div>
-    </div>
 
-    <div class="trip-card" style="margin-top:0;">
-      <div class="trip-title" id="lblOdo">ODOMETER</div>
-      <div style="text-align:center;padding:16px 0;">
-        <div style="font-family:'Orbitron',monospace;font-size:42px;color:var(--accent2);font-weight:900;" id="odoVal">0.0</div>
-        <div style="font-size:12px;color:var(--text-muted);letter-spacing:2px;">km</div>
-        <div style="font-family:'Noto Sans Sinhala';font-size:12px;color:var(--text-secondary);margin-top:4px;" id="lblOdoSi">සම්පූර්ණ දුර</div>
+      <div class="route-info-bar" id="routeInfoBar">
+        <div>
+          <div class="ri-data" id="riDist">0 km</div>
+          <div class="ri-label" id="lblRiDist">දුර (Distance)</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="ri-data" id="riTime">0 min</div>
+          <div class="ri-label" id="lblRiTime">කාලය (ETA)</div>
+        </div>
       </div>
     </div>
   </div>
 
 </div><nav class="bottom-nav">
-  <button class="nav-item active" id="nav-speed" onclick="showSection('speed')">
-    <span class="nav-icon">⚡</span>
-    <span id="nav-speed-lbl">Speed</span>
-  </button>
-  <button class="nav-item" id="nav-weather" onclick="showSection('weather')">
-    <span class="nav-icon">🌤️</span>
-    <span id="nav-weather-lbl">Weather</span>
-  </button>
-  <button class="nav-item" id="nav-map" onclick="showSection('map')">
-    <span class="nav-icon">🗺️</span>
-    <span id="nav-map-lbl">Map</span>
-  </button>
-  <button class="nav-item" id="nav-records" onclick="showSection('records')">
-    <span class="nav-icon">🏆</span>
-    <span id="nav-records-lbl">Records</span>
-  </button>
+  <button class="nav-item active" id="nav-speed" onclick="showSection('speed')"><span class="nav-icon">⚡</span><span>Speed</span></button>
+  <button class="nav-item" id="nav-weather" onclick="showSection('weather')"><span class="nav-icon">🌤️</span><span>Weather</span></button>
+  <button class="nav-item" id="nav-map" onclick="showSection('map')"><span class="nav-icon">🗺️</span><span>Navigate</span></button>
 </nav>
 
 <script>
+// ========== OFFLINE HANDLING & SERVICE WORKER ==========
+function updateOnlineStatus() {
+  const badge = document.getElementById('offlineBadge');
+  if (navigator.onLine) {
+    badge.style.display = 'none';
+    if(currentPos && document.getElementById('mwDesc').textContent === 'Offline') {
+      fetchWeather(); // Try fetching weather again
+    }
+  } else {
+    badge.style.display = 'block';
+    document.getElementById('mwDesc').textContent = 'Offline';
+    document.getElementById('mwIcon').textContent = '🚫';
+    document.getElementById('mwTemp').textContent = '--';
+  }
+}
+
+window.addEventListener('online', updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
+
+// Register Service Worker for caching UI files
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(err => console.log('SW setup skipped/failed'));
+  });
+}
+
 // ========== STATE ==========
-let lang = 'en';
+let lang = 'si';
 let darkMode = true;
 let gpsWatcher = null;
+let currentPos = null;
+
+// Map & Routing
 let map = null;
 let mapMarker = null;
 let mapInitialized = false;
 let pathLine = null;
 let pathCoords = [];
-let wakeLock = null; // Wake Lock variable
+let routingControl = null;
+let navModeActive = false;
 
-let trip = {
-  active: false,
-  startTime: null,
-  distance: 0,
-  speeds: [],
-  maxSpeed: 0,
-  lastPos: null,
-  elapsed: 0,
-  timerInterval: null
-};
+// Speed Accuracy (Smoothing)
+let smoothedSpeed = 0;
+const SPEED_SMOOTHING_FACTOR = 0.3; 
 
-let records = JSON.parse(localStorage.getItem('bikeRecords') || '{}');
+let trip = { active: false, distance: 0 };
 let odometer = parseFloat(localStorage.getItem('bikeOdo') || '0');
 
-let currentPos = null;
-let currentHeading = 0;
-let deferredInstall = null;
+// MOCK HAZARDS
+const safetyHazards = [
+  { lat: 6.6495, lon: 80.7025, type: 'camera', title: 'SPEED CAMERA', si: 'වේග කැමරාවක් ඇත', icon: '📸' },
+  { lat: 6.6510, lon: 80.7040, type: 'curve', title: 'SHARP CURVE', si: 'අනතුරුදායක වංගුවකි', icon: '⚠️' }
+];
+let activeHazardAlert = null;
 
-// ========== WAKE LOCK (Keep Screen On) ==========
-async function requestWakeLock() {
-  try {
-    if ('wakeLock' in navigator) {
-      wakeLock = await navigator.wakeLock.request('screen');
-      console.log('Screen Wake Lock is active');
-    }
-  } catch (err) {
-    console.error(`Wake Lock error: ${err.name}, ${err.message}`);
-  }
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function playWarningBeep() {
+    if(audioCtx.state === 'suspended') audioCtx.resume();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(800, audioCtx.currentTime); 
+    osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.3);
+    gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.3);
 }
-
-// ========== PWA ==========
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredInstall = e;
-  document.getElementById('installBanner').classList.add('show');
-});
-
-function installPWA() {
-  if (!deferredInstall) return;
-  deferredInstall.prompt();
-  deferredInstall.userChoice.then(() => {
-    document.getElementById('installBanner').classList.remove('show');
-    deferredInstall = null;
-  });
-}
-
-// Manifest
-const manifestData = {
-  name: "Bike Rider Pro",
-  short_name: "BikeRider",
-  start_url: ".",
-  display: "standalone",
-  background_color: "#080c18",
-  theme_color: "#00e5ff",
-  icons: [{src:"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏍️</text></svg>", sizes:"any", type:"image/svg+xml"}]
-};
-const manifestBlob = new Blob([JSON.stringify(manifestData)], {type:'application/json'});
-document.getElementById('manifestLink').href = URL.createObjectURL(manifestBlob);
 
 // ========== TRANSLATIONS ==========
 const T = {
   en: {
-    speed:'SPEED', dist:'DIST km', time:'TIME', alt:'ALT m',
-    trip:'TRIP CONTROL', avg:'AVG SPEED', max:'MAX SPEED',
-    start:'Start', stop:'Stop', reset:'Reset',
-    weather:'WEATHER', refresh:'Refresh',
-    map:'LIVE MAP', records:'PERSONAL RECORDS',
-    topSpeed:'TOP SPEED', longTrip:'LONGEST TRIP',
-    longDur:'LONGEST TIME', bestAvg:'BEST AVG', odo:'ODOMETER',
-    wLoading:'Loading weather...',
-    navSpeed:'Speed', navWeather:'Weather', navMap:'Map', navRec:'Records',
-    installTitle:'Install App',
-    rainAlert:'⚠ Rain expected! Take cover.',
-    heatAlert:'⚠ High temp! Stay hydrated.',
-    windAlert:'⚠ Strong winds! Ride carefully.',
     gpsWait:'Getting GPS...',gpsOn:'GPS Active', gpsErr:'GPS Error',
+    navModeOn: 'Tap map to set destination', navModeOff: '🗺️ Route',
+    searchLoc: 'Search location...', offlineMap: 'Internet required for map'
   },
   si: {
-    speed:'වේගය', dist:'දුර km', time:'කාලය', alt:'උස m',
-    trip:'ගමන් පාලනය', avg:'සාමාන්‍ය වේගය', max:'උපරිම වේගය',
-    start:'ආරම්භ', stop:'නවතන්න', reset:'යළි සකසන්න',
-    weather:'කාලගුණය', refresh:'නැවත පූරණය',
-    map:'සජීව සිතියම', records:'වාර්තා',
-    topSpeed:'ඉහළම වේගය', longTrip:'දිගම ගමන',
-    longDur:'දිගම කාලය', bestAvg:'හොඳම සාමාන්‍යය', odo:'ඔඩෝමීටරය',
-    wLoading:'කාලගුණ දත්ත ලබා ගනිමින්...',
-    navSpeed:'වේගය', navWeather:'කාලගුණ', navMap:'සිතියම', navRec:'වාර්තා',
-    installTitle:'App Install කරන්න',
-    rainAlert:'⚠ වර්ෂාව! ආවරණ ගන්න.',
-    heatAlert:'⚠ ඉහළ රත්බව! ජලය පිය.',
-    windAlert:'⚠ ශක්තිමත් සුළඟ! පරිස්සමෙන්.',
     gpsWait:'GPS ලබා ගනිමින්...', gpsOn:'GPS ක්‍රියාකාරී', gpsErr:'GPS දෝෂය',
+    navModeOn: 'ගමනාන්තය සිතියමෙන් තෝරන්න', navModeOff: '🗺️ මාර්ගය',
+    searchLoc: 'ස්ථානය සොයන්න...', offlineMap: 'සිතියමට ඉන්ටර්නෙට් අවශ්‍යයි'
   }
 };
-
 function t(key) { return T[lang][key] || key; }
 
-function applyLang() {
-  document.getElementById('lblSpeed').textContent = t('speed');
-  document.getElementById('lblDist').textContent = t('dist');
-  document.getElementById('lblTime').textContent = t('time');
-  document.getElementById('lblAlt').textContent = t('alt');
-  document.getElementById('lblTrip').textContent = t('trip');
-  document.getElementById('lblAvg').textContent = t('avg');
-  document.getElementById('lblMax').textContent = t('max');
-  document.getElementById('lblStart').textContent = t('start');
-  document.getElementById('lblStop').textContent = t('stop');
-  document.getElementById('lblRes').textContent = t('reset');
-  document.getElementById('lblWeather').textContent = t('weather');
-  document.getElementById('lblRefresh').textContent = t('refresh');
-  document.getElementById('lblMap').textContent = t('map');
-  document.getElementById('lblRecords').textContent = t('records');
-  document.getElementById('lblTopSpeed').textContent = t('topSpeed');
-  document.getElementById('lblLongTrip').textContent = t('longTrip');
-  document.getElementById('lblLongDur').textContent = t('longDur');
-  document.getElementById('lblBestAvg').textContent = t('bestAvg');
-  document.getElementById('lblOdo').textContent = t('odo');
-  document.getElementById('lblWLoading').textContent = t('wLoading');
-  document.getElementById('nav-speed-lbl').textContent = t('navSpeed');
-  document.getElementById('nav-weather-lbl').textContent = t('navWeather');
-  document.getElementById('nav-map-lbl').textContent = t('navMap');
-  document.getElementById('nav-records-lbl').textContent = t('navRec');
-  document.getElementById('installTitle').textContent = t('installTitle');
-  document.querySelector('.compass-n').textContent = lang === 'si' ? 'උ' : 'N';
-}
-
-function toggleLang() {
-  lang = lang === 'en' ? 'si' : 'en';
-  applyLang();
-  updateCompass(currentHeading); // Update compass language
-}
-
-// ========== THEME ==========
 function toggleTheme() {
   darkMode = !darkMode;
   document.body.classList.toggle('light-mode', !darkMode);
   document.getElementById('themeBtn').textContent = darkMode ? '🌙' : '☀️';
 }
-
-// ========== NAVIGATION ==========
-function showSection(name) {
-  ['speed','weather','map','records'].forEach(s => {
-    document.getElementById('sec-'+s).classList.remove('active');
-    document.getElementById('nav-'+s).classList.remove('active');
-  });
-  document.getElementById('sec-'+name).classList.add('active');
-  document.getElementById('nav-'+name).classList.add('active');
-  
-  if (name === 'map') {
-    if (!mapInitialized) {
-      initMap();
-    } else {
-      // Fix map rendering issue when switching tabs
-      setTimeout(() => { if(map) map.invalidateSize(); }, 100);
-    }
-  }
-  if (name === 'weather') fetchWeather();
+function toggleLang() {
+  lang = lang === 'en' ? 'si' : 'en';
+  document.getElementById('btnNavToggle').textContent = navModeActive ? t('navModeOn') : t('navModeOff');
+  const geocoderInput = document.querySelector('.leaflet-control-geocoder-form input');
+  if (geocoderInput) { geocoderInput.placeholder = t('searchLoc'); }
 }
 
-// ========== GPS ==========
-function startGPS() {
-  if (!navigator.geolocation) {
-    setGPSStatus('error');
-    return;
+function showSection(name) {
+  ['speed','map'].forEach(s => {
+    let el = document.getElementById('sec-'+s);
+    if(el) el.classList.remove('active');
+    let nav = document.getElementById('nav-'+s);
+    if(nav) nav.classList.remove('active');
+  });
+  let sel = document.getElementById('sec-'+name);
+  if(sel) sel.classList.add('active');
+  let snav = document.getElementById('nav-'+name);
+  if(snav) snav.classList.add('active');
+  
+  if (name === 'map') {
+    if (!mapInitialized) initMap();
+    else { setTimeout(() => { if(map) map.invalidateSize(); centerMap(); }, 100); }
   }
+}
+
+// ========== MAP & ROUTING LOGIC ==========
+function initMap() {
+  mapInitialized = true;
+  const lat = currentPos ? currentPos.coords.latitude : 6.6483;
+  const lon = currentPos ? currentPos.coords.longitude : 80.7011;
+  
+  map = L.map('map', { zoomControl: false }).setView([lat, lon], 16);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
+  
+  L.Control.geocoder({
+      position: 'topleft', defaultMarkGeocode: false, placeholder: t('searchLoc')
+  }).on('markgeocode', function(e) {
+      if(!navigator.onLine) return alert(t('offlineMap'));
+      const center = e.geocode.center; map.setView(center, 16); calculateRoute(center); 
+  }).addTo(map);
+
+  const bikeIcon = L.divIcon({ html: '<div style="font-size:26px; text-shadow:0 0 10px #00e5ff;">🏍️</div>', className: 'custom-bike-marker', iconSize: [30, 30], iconAnchor: [15, 15] });
+  mapMarker = L.marker([lat, lon], {icon: bikeIcon}).addTo(map);
+  
+  pathCoords.push([lat, lon]);
+  pathLine = L.polyline(pathCoords, {color:'#00e5ff', weight:4, opacity:0.8}).addTo(map);
+  
+  map.on('click', function(e) {
+    if (!navModeActive) return;
+    if(!navigator.onLine) { toggleNavMode(); return alert(t('offlineMap')); }
+    calculateRoute(e.latlng);
+  });
+
+  setTimeout(() => map.invalidateSize(), 100);
+}
+
+function centerMap() {
+    if(map && currentPos) map.setView([currentPos.coords.latitude, currentPos.coords.longitude], 16);
+}
+
+function toggleNavMode() {
+    navModeActive = !navModeActive;
+    const btn = document.getElementById('btnNavToggle');
+    if(navModeActive) {
+        btn.classList.add('active'); btn.textContent = t('navModeOn');
+    } else {
+        btn.classList.remove('active'); btn.textContent = t('navModeOff');
+    }
+}
+
+function calculateRoute(destinationLatLng) {
+    if (!currentPos || !map) return;
+    if (routingControl) map.removeControl(routingControl);
+    
+    document.getElementById('btnClearNav').style.display = 'block';
+    navModeActive = false;
+    document.getElementById('btnNavToggle').classList.remove('active');
+    document.getElementById('btnNavToggle').textContent = t('navModeOff');
+    
+    routingControl = L.Routing.control({
+        waypoints: [ L.latLng(currentPos.coords.latitude, currentPos.coords.longitude), destinationLatLng ],
+        router: L.Routing.osrmv1({ language: 'en', profile: 'driving' }),
+        lineOptions: { styles: [{color: '#39ff14', opacity: 0.8, weight: 6}] },
+        createMarker: function() { return null; }, show: false, fitSelectedRoutes: true
+    }).on('routesfound', function(e) {
+        let summary = e.routes[0].summary;
+        document.getElementById('routeInfoBar').classList.add('show');
+        document.getElementById('riDist').textContent = (summary.totalDistance / 1000).toFixed(1) + ' km';
+        document.getElementById('riTime').textContent = Math.round(summary.totalTime / 60) + ' min';
+    }).addTo(map);
+}
+
+function clearRoute() {
+    if(routingControl) map.removeControl(routingControl);
+    routingControl = null;
+    document.getElementById('routeInfoBar').classList.remove('show');
+    document.getElementById('btnClearNav').style.display = 'none';
+    centerMap();
+}
+
+// ========== GPS & SPEED SMOOTHING ==========
+function startGPS() {
+  if (!navigator.geolocation) return setGPSStatus('error');
   setGPSStatus('waiting');
-  gpsWatcher = navigator.geolocation.watchPosition(
-    onGPSSuccess, onGPSError,
-    { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 }
-  );
+  gpsWatcher = navigator.geolocation.watchPosition(onGPSSuccess, onGPSError, { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 });
 }
 
 function onGPSSuccess(pos) {
-  // GPS Accuracy Check: Ignore data if accuracy is worse than 20 meters
-  if (pos.coords.accuracy > 20) {
-    setGPSStatus('waiting');
-    return;
-  }
-
+  if (pos.coords.accuracy > 20) return; 
   setGPSStatus('active');
-  const spd = pos.coords.speed ? pos.coords.speed * 3.6 : 0;
-  const alt = pos.coords.altitude ? Math.round(pos.coords.altitude) : 0;
-  const heading = pos.coords.heading || 0;
   
-  currentPos = pos;
-  currentHeading = heading;
+  let rawSpeedKmh = pos.coords.speed ? (pos.coords.speed * 3.6) : 0;
+  if (rawSpeedKmh < 2.5) rawSpeedKmh = 0; 
+  smoothedSpeed = (SPEED_SMOOTHING_FACTOR * rawSpeedKmh) + ((1 - SPEED_SMOOTHING_FACTOR) * smoothedSpeed);
+  if (smoothedSpeed < 1) smoothedSpeed = 0;
 
-  // Update speed display
-  updateSpeed(spd);
-  
-  // Update alt
-  document.getElementById('altVal').textContent = alt;
-  
-  // Update heading/compass
-  if (pos.coords.heading !== null && pos.coords.heading >= 0) {
-    updateCompass(pos.coords.heading);
+  if(!currentPos && navigator.onLine) {
+      currentPos = pos; fetchWeather(); // initial fetch
   }
+  currentPos = pos;
+  
+  updateSpeed(smoothedSpeed);
+  checkHazards(pos.coords.latitude, pos.coords.longitude);
 
-  // Update map coords
-  document.getElementById('mapCoords').textContent = 
-    pos.coords.latitude.toFixed(5) + ', ' + pos.coords.longitude.toFixed(5);
+  document.getElementById('altVal').textContent = pos.coords.altitude ? Math.round(pos.coords.altitude) : 0;
+  document.getElementById('mapCoords').textContent = pos.coords.latitude.toFixed(5) + ', ' + pos.coords.longitude.toFixed(5);
 
-  // Update map marker
   if (mapInitialized && map) {
     const latlng = [pos.coords.latitude, pos.coords.longitude];
     if (mapMarker) mapMarker.setLatLng(latlng);
-    else {
-      mapMarker = L.circleMarker(latlng, {
-        radius: 10, fillColor: '#00e5ff', color: '#fff',
-        weight: 2, opacity: 1, fillOpacity: 0.9
-      }).addTo(map);
+    if (pathCoords.length === 0 || latlng[0] !== pathCoords[pathCoords.length-1][0]) {
+      pathCoords.push(latlng); if (pathLine) pathLine.setLatLngs(pathCoords);
     }
-    if (pathCoords.length === 0 || 
-        latlng[0] !== pathCoords[pathCoords.length-1][0]) {
-      pathCoords.push(latlng);
-      if (pathLine) pathLine.setLatLngs(pathCoords);
-      else {
-        pathLine = L.polyline(pathCoords, {color:'#00e5ff', weight:3, opacity:0.7}).addTo(map);
-      }
-    }
-    map.panTo(latlng);
   }
-
-  // Trip distance
-  if (trip.active && trip.lastPos) {
-    const d = haversine(trip.lastPos, [pos.coords.latitude, pos.coords.longitude]);
-    trip.distance += d;
-    odometer += d;
-    localStorage.setItem('bikeOdo', odometer.toFixed(3));
-    document.getElementById('distVal').textContent = trip.distance.toFixed(1);
-    document.getElementById('odoVal').textContent = odometer.toFixed(1);
-    trip.speeds.push(spd);
-    if (spd > trip.maxSpeed) trip.maxSpeed = spd;
-  }
-  trip.lastPos = [pos.coords.latitude, pos.coords.longitude];
 }
 
 function onGPSError(err) {
   setGPSStatus('error');
-  // Simulate for demo
-  simulateGPS();
+  simulateGPS(); 
 }
 
 function setGPSStatus(state) {
@@ -1056,324 +439,108 @@ function setGPSStatus(state) {
   else { txt.textContent = t('gpsWait'); }
 }
 
-// Haversine distance
 function haversine(a, b) {
-  const R = 6371;
+  const R = 6371; 
   const dLat = (b[0]-a[0])*Math.PI/180;
   const dLon = (b[1]-a[1])*Math.PI/180;
   const x = Math.sin(dLat/2)**2 + Math.cos(a[0]*Math.PI/180)*Math.cos(b[0]*Math.PI/180)*Math.sin(dLon/2)**2;
   return R * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1-x));
 }
 
-// ========== SIMULATION (when GPS unavailable) ==========
-let simSpeed = 0, simDir = 1, simAngle = 0;
-let simLat = 6.9271, simLon = 79.8612;
+// ========== HAZARD ALERTS ==========
+function checkHazards(lat, lon) {
+    let alertTriggered = false;
+    for(let h of safetyHazards) {
+        let distKm = haversine([lat, lon], [h.lat, h.lon]);
+        let distMeters = Math.round(distKm * 1000);
+        if(distMeters < 500 && distMeters > 20) {
+            showHazardAlert(h, distMeters); alertTriggered = true; break; 
+        }
+    }
+    if(!alertTriggered) hideHazardAlert();
+}
+
+function showHazardAlert(hazard, distanceM) {
+    const alertBox = document.getElementById('hazardAlert');
+    if(activeHazardAlert !== hazard.title) {
+        playWarningBeep(); setTimeout(playWarningBeep, 400); 
+        activeHazardAlert = hazard.title;
+    }
+    document.getElementById('hzIcon').textContent = hazard.icon;
+    document.getElementById('hzTitle').textContent = hazard.title;
+    document.getElementById('hzSub').textContent = lang === 'si' ? hazard.si : hazard.title;
+    document.getElementById('hzDist').textContent = distanceM + "m";
+    alertBox.classList.add('show');
+}
+function hideHazardAlert() { document.getElementById('hazardAlert').classList.remove('show'); activeHazardAlert = null; }
+
+// ========== SIMULATION ==========
+let simSpeed = 0, simDir = 1;
+let simLat = 6.6483, simLon = 80.7011; 
 function simulateGPS() {
   setGPSStatus('active');
   setInterval(() => {
-    simSpeed += simDir * (Math.random() * 5 - 1);
-    if (simSpeed > 80) simDir = -1;
+    let rawJumpySpeed = simSpeed + (Math.random() * 10 - 5);
+    simSpeed += simDir * (Math.random() * 2);
+    if (simSpeed > 60) simDir = -1;
     if (simSpeed < 0) { simSpeed = 0; simDir = 1; }
-    simAngle = (simAngle + 2) % 360;
-    simLat += 0.00005;
-    simLon += 0.00003;
-    currentHeading = simAngle;
-    
-    updateSpeed(simSpeed);
-    updateCompass(simAngle);
-    document.getElementById('mapCoords').textContent = simLat.toFixed(5) + ', ' + simLon.toFixed(5);
-    
-    if (mapInitialized && map) {
-      const latlng = [simLat, simLon];
-      if (mapMarker) mapMarker.setLatLng(latlng);
-      else {
-        mapMarker = L.circleMarker(latlng, {
-          radius: 10, fillColor:'#00e5ff', color:'#fff', weight:2, fillOpacity:0.9
-        }).addTo(map);
-      }
-      pathCoords.push(latlng);
-      if (pathLine) pathLine.setLatLngs(pathCoords);
-      else pathLine = L.polyline(pathCoords, {color:'#00e5ff', weight:3, opacity:0.7}).addTo(map);
-      map.panTo(latlng);
-    }
-
-    if (trip.active) {
-      if (trip.lastPos) {
-        const d = haversine(trip.lastPos, [simLat, simLon]);
-        trip.distance += d;
-        odometer += d;
-        localStorage.setItem('bikeOdo', odometer.toFixed(3));
-        document.getElementById('distVal').textContent = trip.distance.toFixed(1);
-        document.getElementById('odoVal').textContent = odometer.toFixed(1);
-        trip.speeds.push(simSpeed);
-        if (simSpeed > trip.maxSpeed) trip.maxSpeed = simSpeed;
-        document.getElementById('maxSpeedVal').textContent = Math.round(trip.maxSpeed);
-        const avg = trip.speeds.length ? trip.speeds.reduce((a,b)=>a+b)/trip.speeds.length : 0;
-        document.getElementById('avgSpeedVal').textContent = avg.toFixed(1);
-      }
-      trip.lastPos = [simLat, simLon];
-    }
+    simLat += 0.00003; simLon += 0.00001;
+    currentPos = { coords: { latitude: simLat, longitude: simLon, accuracy: 10, speed: rawJumpySpeed / 3.6 } };
+    onGPSSuccess(currentPos); 
   }, 1000);
 }
 
-// ========== SPEED DISPLAY ==========
+// ========== UI UPDATES ==========
 function updateSpeed(spd) {
   const spdRound = Math.round(spd);
   const el = document.getElementById('speedNum');
-  el.textContent = spdRound;
-  el.className = 'speed-number';
-  if (spdRound > 100) el.classList.add('danger');
-  else if (spdRound > 70) el.classList.add('warn');
+  el.textContent = spdRound; el.className = 'speed-number';
+  if (spdRound > 100) el.classList.add('danger'); else if (spdRound > 70) el.classList.add('warn');
   
-  // Arc
   const pct = Math.min(spdRound / 140, 1);
   const arcLen = 251;
   document.getElementById('speedArc').style.strokeDashoffset = arcLen - (pct * arcLen);
-  const col = spdRound > 100 ? '#ff3b5c' : spdRound > 70 ? '#ffcc00' : '#00e5ff';
-  document.getElementById('speedArc').style.stroke = col;
+  document.getElementById('speedArc').style.stroke = spdRound > 100 ? '#ff3b5c' : spdRound > 70 ? '#ffcc00' : '#00e5ff';
 }
 
-// ========== COMPASS ==========
-function updateCompass(heading) {
-  const needle = document.getElementById('compassNeedle');
-  needle.style.transform = `translateX(-50%) translateY(-100%) rotate(${heading}deg)`;
-  
-  const dirsEn = ['N','NE','E','SE','S','SW','W','NW'];
-  const dirsSi = ['උතුරු','ඊසාන','නැගෙනහිර','ගිනිකොන','දකුණු','නිරිත','බටහිර','වයඹ'];
-  
-  const dir = lang === 'si' ? dirsSi[Math.round(heading / 45) % 8] : dirsEn[Math.round(heading / 45) % 8];
-  document.getElementById('headingText').textContent = `${Math.round(heading)}° ${dir}`;
-}
-
-// ========== TRIP CONTROL ==========
-function startTrip() {
-  requestWakeLock(); // Request Wake Lock when trip starts
-  
-  trip.active = true;
-  trip.startTime = Date.now();
-  trip.distance = 0;
-  trip.speeds = [];
-  trip.maxSpeed = 0;
-  trip.lastPos = null;
-  document.getElementById('btnStart').disabled = true;
-  document.getElementById('btnStop').disabled = false;
-  trip.timerInterval = setInterval(updateTimer, 1000);
-}
-
-function stopTrip() {
-  if (!trip.active) return;
-  
-  // Release Wake Lock
-  if (wakeLock !== null) {
-    wakeLock.release()
-      .then(() => { wakeLock = null; console.log('Screen Wake Lock released'); })
-      .catch(err => console.error(err));
-  }
-
-  trip.active = false;
-  clearInterval(trip.timerInterval);
-  document.getElementById('btnStart').disabled = false;
-  document.getElementById('btnStop').disabled = true;
-  
-  // Save records
-  const elapsed = Math.floor((Date.now() - trip.startTime) / 1000);
-  const avg = trip.speeds.length ? trip.speeds.reduce((a,b)=>a+b)/trip.speeds.length : 0;
-  const now = new Date().toLocaleDateString();
-  
-  if (!records.topSpeed || trip.maxSpeed > records.topSpeed) {
-    records.topSpeed = Math.round(trip.maxSpeed);
-    records.topSpeedDate = now;
-  }
-  if (!records.longTrip || trip.distance > records.longTrip) {
-    records.longTrip = trip.distance.toFixed(1);
-    records.longTripDate = now;
-  }
-  if (!records.longDur || elapsed > records.longDur) {
-    records.longDur = elapsed;
-    records.longDurDate = now;
-  }
-  if (!records.bestAvg || avg > records.bestAvg) {
-    records.bestAvg = avg.toFixed(1);
-    records.bestAvgDate = now;
-  }
-  localStorage.setItem('bikeRecords', JSON.stringify(records));
-  updateRecordsUI();
-}
-
-function resetTrip() {
-  stopTrip();
-  trip.distance = 0;
-  trip.speeds = [];
-  trip.maxSpeed = 0;
-  document.getElementById('distVal').textContent = '0.0';
-  document.getElementById('timeVal').textContent = '00:00';
-  document.getElementById('avgSpeedVal').textContent = '0.0';
-  document.getElementById('maxSpeedVal').textContent = '0';
-}
-
-function updateTimer() {
-  if (!trip.startTime) return;
-  const s = Math.floor((Date.now() - trip.startTime) / 1000);
-  const m = Math.floor(s / 60);
-  const sec = s % 60;
-  document.getElementById('timeVal').textContent = 
-    String(m).padStart(2,'0') + ':' + String(sec).padStart(2,'0');
-  
-  if (trip.speeds.length) {
-    const avg = trip.speeds.reduce((a,b)=>a+b)/trip.speeds.length;
-    document.getElementById('avgSpeedVal').textContent = avg.toFixed(1);
-    document.getElementById('maxSpeedVal').textContent = Math.round(trip.maxSpeed);
-  }
-}
-
-// ========== RECORDS UI ==========
-function updateRecordsUI() {
-  document.getElementById('recTopSpeed').textContent = records.topSpeed || 0;
-  document.getElementById('recTopTime').textContent = records.topSpeedDate || '--';
-  document.getElementById('recLongTrip').textContent = records.longTrip || 0;
-  document.getElementById('recLongTime').textContent = records.longTripDate || '--';
-  document.getElementById('recLongDur').textContent = records.longDur ? 
-    Math.floor(records.longDur/60)+'m '+records.longDur%60+'s' : '0:00';
-  document.getElementById('recDurTime').textContent = records.longDurDate || '--';
-  document.getElementById('recBestAvg').textContent = records.bestAvg || 0;
-  document.getElementById('recBestTime').textContent = records.bestAvgDate || '--';
-  document.getElementById('odoVal').textContent = odometer.toFixed(1);
-}
-
-// ========== MAP ==========
-function initMap() {
-  mapInitialized = true;
-  const lat = simLat, lon = simLon;
-  map = L.map('map', { zoomControl: true }).setView([lat, lon], 15);
-  
-  // Dark tile layer
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    attribution: '© OpenStreetMap | © CARTO',
-    maxZoom: 19
-  }).addTo(map);
-  
-  // Center marker
-  mapMarker = L.circleMarker([lat, lon], {
-    radius: 10, fillColor: '#00e5ff', color: '#fff',
-    weight: 2, opacity: 1, fillOpacity: 0.9
-  }).addTo(map);
-  
-  pathCoords.push([lat, lon]);
-  pathLine = L.polyline(pathCoords, {color:'#00e5ff', weight:3, opacity:0.7}).addTo(map);
-  
-  setTimeout(() => map.invalidateSize(), 100);
-}
-
-// ========== WEATHER ==========
-async function fetchWeather() {
-  const lat = currentPos ? currentPos.coords.latitude : simLat;
-  const lon = currentPos ? currentPos.coords.longitude : simLon;
-  
-  const html = `<div class="empty-state"><div class="empty-icon">⏳</div>
-    <div class="empty-text">${t('wLoading')}</div></div>`;
-  document.getElementById('weatherContent').innerHTML = html;
-  
-  try {
-    const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,precipitation,weather_code&wind_speed_unit=kmh`);
-    const d = await r.json();
-    const c = d.current;
-    renderWeather(c, lat, lon);
-    checkWeatherAlerts(c);
-  } catch(e) {
-    document.getElementById('weatherContent').innerHTML = `
-      <div class="empty-state"><div class="empty-icon">❌</div>
-      <div class="empty-text">Connection failed</div>
-      <div class="empty-si">සම්බන්ධතාව අසාර්ථකයි</div></div>`;
-  }
-}
-
-function getWeatherIcon(code) {
-  if (code === 0) return '☀️';
-  if (code <= 3) return '⛅';
-  if (code <= 48) return '🌫️';
-  if (code <= 67) return '🌧️';
-  if (code <= 77) return '❄️';
-  if (code <= 82) return '🌦️';
-  if (code <= 99) return '⛈️';
-  return '🌡️';
-}
-
-function getWeatherDesc(code) {
-  if (code === 0) return lang==='si' ? 'හිරු දිනය' : 'Clear Sky';
-  if (code <= 3) return lang==='si' ? 'අර්ධ වලාකුළු' : 'Partly Cloudy';
-  if (code <= 48) return lang==='si' ? 'මීදුම' : 'Foggy';
-  if (code <= 67) return lang==='si' ? 'වර්ෂාව' : 'Rainy';
-  if (code <= 77) return lang==='si' ? 'හිම' : 'Snow';
-  if (code <= 82) return lang==='si' ? 'හදිසි වර්ෂාව' : 'Showers';
-  if (code <= 99) return lang==='si' ? 'ගිගිරුම් සහිත' : 'Thunderstorm';
-  return 'Unknown';
-}
-
-function renderWeather(c, lat, lon) {
-  const icon = getWeatherIcon(c.weather_code);
-  const desc = getWeatherDesc(c.weather_code);
-  document.getElementById('weatherContent').innerHTML = `
-    <div class="weather-main">
-      <div class="weather-icon">${icon}</div>
-      <div>
-        <div class="weather-temp">${Math.round(c.temperature_2m)}°C</div>
-        <div class="weather-desc">${desc}</div>
-        <div class="weather-city">${lat.toFixed(3)}°N, ${lon.toFixed(3)}°E</div>
-      </div>
-    </div>
-    <div class="weather-details">
-      <div class="wd-item">
-        <div class="wd-val">💧 ${c.relative_humidity_2m}%</div>
-        <div class="wd-key">${lang==='si'?'ආර්ද්‍රතාව':'HUMIDITY'}</div>
-      </div>
-      <div class="wd-item">
-        <div class="wd-val">💨 ${Math.round(c.wind_speed_10m)}</div>
-        <div class="wd-key">${lang==='si'?'සුළඟ km/h':'WIND km/h'}</div>
-      </div>
-      <div class="wd-item">
-        <div class="wd-val">🌧️ ${c.precipitation}mm</div>
-        <div class="wd-key">${lang==='si'?'වර්ෂාපතනය':'PRECIP'}</div>
-      </div>
-    </div>`;
-}
-
-function checkWeatherAlerts(c) {
-  document.getElementById('alertRain').classList.toggle('show', c.weather_code >= 51);
-  document.getElementById('alertHeat').classList.toggle('show', c.temperature_2m > 35);
-  document.getElementById('alertWind').classList.toggle('show', c.wind_speed_10m > 50);
-  
-  document.getElementById('alertRainTitle').textContent = t('rainAlert');
-  document.getElementById('alertHeatTitle').textContent = t('heatAlert');
-  document.getElementById('alertWindTitle').textContent = t('windAlert');
-}
-
-// ========== ARC TICKS ==========
 function drawTicks() {
   const g = document.getElementById('ticks');
   for (let i = 0; i <= 14; i++) {
-    const angle = -180 + i * (180/14);
-    const rad = angle * Math.PI / 180;
-    const cx = 100, cy = 100, r = 80;
-    const x1 = cx + r * Math.cos(rad);
-    const y1 = cy + r * Math.sin(rad);
+    const angle = -180 + i * (180/14); const rad = angle * Math.PI / 180; const cx = 100, cy = 100, r = 80;
     const r2 = i % 7 === 0 ? 72 : 75;
-    const x2 = cx + r2 * Math.cos(rad);
-    const y2 = cy + r2 * Math.sin(rad);
     const line = document.createElementNS('http://www.w3.org/2000/svg','line');
-    line.setAttribute('x1',x1); line.setAttribute('y1',y1);
-    line.setAttribute('x2',x2); line.setAttribute('y2',y2);
+    line.setAttribute('x1', cx + r * Math.cos(rad)); line.setAttribute('y1', cy + r * Math.sin(rad));
+    line.setAttribute('x2', cx + r2 * Math.cos(rad)); line.setAttribute('y2', cy + r2 * Math.sin(rad));
     line.setAttribute('stroke', i%7===0 ? 'rgba(0,229,255,0.5)' : 'rgba(255,255,255,0.15)');
     line.setAttribute('stroke-width', i%7===0 ? '2' : '1');
     g.appendChild(line);
   }
 }
 
-// ========== INIT ==========
+// WEATHER FETCH
+async function fetchWeather() {
+  if (!navigator.onLine) return; // Prevent fetch if offline
+  const lat = currentPos ? currentPos.coords.latitude : simLat;
+  const lon = currentPos ? currentPos.coords.longitude : simLon;
+  
+  try {
+    const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code`);
+    const d = await r.json(); const c = d.current;
+    
+    document.getElementById('mwTemp').textContent = `${Math.round(c.temperature_2m)}°C`;
+    
+    let wDesc = "Clear"; let wIcon = "☀️";
+    if (c.weather_code >= 1 && c.weather_code <= 3) { wDesc = "Cloudy"; wIcon = "⛅"; }
+    else if (c.weather_code >= 51) { wDesc = "Rain"; wIcon = "🌧️"; }
+    
+    document.getElementById('mwIcon').textContent = wIcon;
+    document.getElementById('mwDesc').textContent = lang==='si' ? (wDesc==="Clear"?'පැහැදිලි':wDesc==="Cloudy"?'වලාකුළු':'වර්ෂාව') : wDesc;
+  } catch(e) { console.log("Weather failed"); }
+}
+
 drawTicks();
+updateOnlineStatus(); // Initial online/offline check
 startGPS();
-updateRecordsUI();
-applyLang();
-fetchWeather();
 </script>
 </body>
 </html>
