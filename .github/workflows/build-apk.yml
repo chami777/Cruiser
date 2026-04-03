@@ -46,9 +46,14 @@ jobs:
         run: |
           npx cap add android
 
+      - name: Add GPS Permissions to Android Manifest
+        run: |
+          # මේ පියවරෙන් Android App එකට GPS Permissions ඇතුළත් කරයි
+          MANIFEST="android/app/src/main/AndroidManifest.xml"
+          sed -i 's/<uses-permission android:name="android.permission.INTERNET" \/>/<uses-permission android:name="android.permission.INTERNET" \/>\n    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" \/>\n    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" \/>/g' $MANIFEST
+
       - name: Fix Kotlin Duplicates
         run: |
-          # මේ පියවරෙන් Android Build එකේ තියෙන Kotlin Version ගැටලුව විසඳයි
           echo "subprojects {
               configurations.all {
                   resolutionStrategy.eachDependency { details ->
