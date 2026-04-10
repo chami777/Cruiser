@@ -70,15 +70,13 @@ body::before { content: ''; position: fixed; inset: 0; background: radial-gradie
 @keyframes slideIn { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:none; } }
 .alert-banner.show { display: flex; }
 .alert-banner.rain { background: rgba(0,100,255,0.15); border: 1px solid rgba(0,150,255,0.3); }
-.alert-banner.heat { background: rgba(255,100,0,0.15); border: 1px solid rgba(255,130,0,0.3); }
-.alert-banner.wind { background: rgba(100,200,255,0.15); border: 1px solid rgba(100,200,255,0.3); }
 .alert-banner.fog { background: rgba(150,150,150,0.15); border: 1px solid rgba(200,200,200,0.4); } 
 .alert-icon { font-size: 24px; }
 .alert-text { flex: 1; }
 .alert-title { font-weight: 600; color: var(--text-primary); }
 .alert-sub { font-size: 11px; color: var(--text-secondary); font-family: 'Noto Sans Sinhala', sans-serif; }
 
-/* SPEEDOMETER */
+/* SPEEDOMETER & MAIN ODO */
 .speed-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 24px; padding: 24px 20px; backdrop-filter: blur(20px); box-shadow: var(--shadow-deep); text-align: center; position: relative; overflow: hidden; }
 .speed-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(from 180deg at 50% 50%, transparent 60%, rgba(0,229,255,0.04) 80%, transparent 100%); animation: rotate 8s linear infinite; }
 .speed-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; font-family: 'Orbitron', monospace; }
@@ -87,6 +85,8 @@ body::before { content: ''; position: fixed; inset: 0; background: radial-gradie
 .speed-number.warn { color: var(--warning); text-shadow: 0 0 30px rgba(255,204,0,0.6); }
 .speed-number.danger { color: var(--danger); text-shadow: 0 0 30px rgba(255,0,68,0.6); animation: pulse 0.5s infinite alternate; }
 .speed-unit { font-family: 'Orbitron', monospace; font-size: 16px; color: var(--text-secondary); letter-spacing: 2px; }
+.main-odo { font-family: 'Orbitron', monospace; font-size: 14px; font-weight: 700; color: var(--accent4); background: rgba(0,0,0,0.4); padding: 4px 12px; border-radius: 8px; border: 1px solid rgba(191,90,242,0.3); display: inline-block; margin-top: 10px; letter-spacing: 1px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);}
+
 .arc-wrap { position: relative; width: 200px; height: 110px; margin: 0 auto 8px; }
 .arc-svg { width: 100%; height: 100%; }
 #speedArc { transition: stroke-dashoffset 0.4s ease-out, stroke 0.4s ease-out; }
@@ -97,24 +97,29 @@ body::before { content: ''; position: fixed; inset: 0; background: radial-gradie
 .mw-temp { font-family: 'Orbitron', monospace; font-weight: 700; color: var(--text-primary); }
 .mw-desc { font-size: 12px; color: var(--text-secondary); font-family: 'Noto Sans Sinhala', sans-serif; }
 
-/* ELEVATION GRAPH */
+/* ELEVATION GRAPH & MAINTENANCE */
 .elevation-card { background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 16px; padding: 12px; margin-top: 16px; backdrop-filter: blur(10px);}
 .el-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.el-title { font-family: 'Orbitron', monospace; font-size: 10px; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; }
-.el-title-si { font-size: 10px; color: var(--text-secondary); font-family: 'Noto Sans Sinhala', sans-serif; }
-.el-current { font-family: 'Orbitron', monospace; font-size: 16px; color: var(--accent4); font-weight: 700; }
+.el-title { font-family: 'Orbitron', monospace; font-size: 10px; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; font-weight: bold; }
+.el-current { font-family: 'Orbitron', monospace; font-size: 16px; color: var(--accent); font-weight: 700; }
 canvas#altGraph { width: 100%; height: 60px; display: block; border-bottom: 1px solid rgba(255,255,255,0.05); }
 
-.stats-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+/* MAINTENANCE TRACKER */
+.maint-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 16px; margin-top: 16px; backdrop-filter: blur(15px); box-shadow: var(--shadow-deep); }
+.maint-bar-bg { height: 10px; background: rgba(255,255,255,0.1); border-radius: 5px; overflow: hidden; margin-top: 12px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5); }
+.maint-bar-fill { height: 100%; background: var(--success); width: 0%; transition: width 0.5s ease, background 0.5s ease; }
+.btn-maint-reset { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: var(--text-primary); border-radius: 8px; padding: 4px 10px; font-size: 11px; cursor: pointer; transition: 0.2s; font-family: 'Rajdhani', sans-serif; font-weight: 600;}
+.btn-maint-reset:hover { background: var(--accent); color: #000; border-color: var(--accent); }
+
+.stats-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 16px;}
 .stat-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 14px 10px; text-align: center; backdrop-filter: blur(15px); transition: all 0.3s; cursor: default; }
 .stat-box:hover { border-color: var(--border-bright); box-shadow: var(--glow); }
 .stat-icon { font-size: 22px; margin-bottom: 4px; }
 .stat-value { font-family: 'Orbitron', monospace; font-size: 18px; font-weight: 700; color: var(--accent); }
-.stat-label { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; margin-top: 2px; }
-.stat-sub { font-size: 10px; color: var(--text-secondary); margin-top: 2px; font-family: 'Noto Sans Sinhala', sans-serif; }
+.stat-label { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; margin-top: 2px; font-family: 'Noto Sans Sinhala', sans-serif; font-weight: bold;}
 
 /* TRIP CONTROLS */
-.trip-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 16px; backdrop-filter: blur(20px); }
+.trip-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 16px; backdrop-filter: blur(20px); margin-top: 16px;}
 .btn-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
 .btn-trip { background: rgba(0,229,255,0.08); border: 1px solid var(--border-bright); color: var(--accent); padding: 12px 8px; border-radius: 12px; font-size: 13px; font-family: 'Rajdhani', sans-serif; font-weight: 600; cursor: pointer; transition: all 0.2s; text-align: center; }
 .btn-trip:hover { background: rgba(0,229,255,0.16); box-shadow: var(--glow); }
@@ -125,7 +130,7 @@ canvas#altGraph { width: 100%; height: 60px; display: block; border-bottom: 1px 
 
 .map-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow-deep); position: relative; }
 .map-header { padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
-.map-title { font-family: 'Orbitron', monospace; font-size: 11px; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; }
+.map-title { font-family: 'Orbitron', monospace; font-size: 11px; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; font-weight: bold;}
 .map-coords { font-size: 11px; color: var(--text-secondary); font-family: monospace; }
 #map { height: 350px; width: 100%; z-index: 1;}
 
@@ -160,7 +165,7 @@ canvas#altGraph { width: 100%; height: 60px; display: block; border-bottom: 1px 
 .section.active { display: block; }
 .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; background: rgba(8,12,24,0.95); backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; padding: 8px 16px 16px; gap: 4px; }
 .light-mode .bottom-nav { background: rgba(232,237,245,0.95); }
-.nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 8px 4px; border-radius: 12px; cursor: pointer; color: var(--text-muted); font-size: 10px; letter-spacing: 0.5px; transition: all 0.2s; border: none; background: none; font-family: 'Noto Sans Sinhala', sans-serif; }
+.nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 8px 4px; border-radius: 12px; cursor: pointer; color: var(--text-muted); font-size: 10px; letter-spacing: 0.5px; transition: all 0.2s; border: none; background: none; font-family: 'Noto Sans Sinhala', sans-serif; font-weight: bold;}
 .nav-item:hover, .nav-item.active { color: var(--accent); background: rgba(0,229,255,0.08); }
 .nav-item.active { color: var(--accent); }
 .nav-icon { font-size: 22px; }
@@ -168,9 +173,7 @@ canvas#altGraph { width: 100%; height: 60px; display: block; border-bottom: 1px 
 #offlineBadge { display: none; background: var(--warning); color: #000; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold; font-family: 'Orbitron', monospace; animation: pulse 2s infinite alternate; letter-spacing: 1px; }
 </style>
 </head>
-<body>
-
-<div class="header">
+<body onclick="initAudio()"> <div class="header">
   <div class="header-logo">CRUISER<span>PRO</span></div>
   <div class="header-controls">
     <div id="offlineBadge">OFFLINE</div>
@@ -188,11 +191,11 @@ canvas#altGraph { width: 100%; height: 60px; display: block; border-bottom: 1px 
 
 <div class="dev-modal" id="devModal">
   <div class="dev-content">
-    <h3>DEVELOPER INFO</h3>
+    <h3 id="lblDevInfoTitle">DEVELOPER INFO</h3>
     <p><strong>Name:</strong> <span>Chamalka</span></p>
     <p><strong>Contact:</strong> <span>0768567788</span></p>
-    <p><strong>System:</strong> <span>Cruiser Pro v1.0</span></p>
-    <button class="btn-close-dev" onclick="closeDevInfo()">Close</button>
+    <p><strong>System:</strong> <span>Cruiser Pro v1.2</span></p>
+    <button class="btn-close-dev" id="btnDevClose" onclick="closeDevInfo()">Close</button>
   </div>
 </div>
 
@@ -237,6 +240,7 @@ canvas#altGraph { width: 100%; height: 60px; display: block; border-bottom: 1px 
       <div class="speed-display">
         <div class="speed-number" id="speedNum">0</div>
         <div class="speed-unit">km/h</div>
+        <div class="main-odo" id="mainOdo">ODO: 0.0 km</div>
       </div>
       
       <div class="mini-weather" onclick="showSection('weather')" title="View Full Weather">
@@ -249,22 +253,33 @@ canvas#altGraph { width: 100%; height: 60px; display: block; border-bottom: 1px 
 
     <div class="elevation-card">
         <div class="el-header">
-            <div>
-                <span class="el-title" id="lblElev">ELEVATION</span>
-                <span class="el-title-si" id="lblElevSi">උන්නතාංශය</span>
-            </div>
+            <div><span class="el-title" id="lblElev">ELEVATION</span></div>
             <div class="el-current"><span id="altGVal">0</span> m</div>
         </div>
         <canvas id="altGraph" width="400" height="60"></canvas>
     </div>
 
-    <div class="stats-row" style="margin-top: 16px;">
-      <div class="stat-box"><div class="stat-icon">📍</div><div class="stat-value" id="distVal">0.0</div><div class="stat-label">DIST km</div></div>
-      <div class="stat-box"><div class="stat-icon">⏱️</div><div class="stat-value" id="timeVal">00:00</div><div class="stat-label">TIME</div></div>
-      <div class="stat-box"><div class="stat-icon">🔥</div><div class="stat-value" id="maxSpeedVal">0</div><div class="stat-label">MAX km/h</div></div>
+    <div class="maint-card">
+      <div class="el-header">
+        <div><span class="el-title" id="lblMaint">MAINTENANCE (2500km)</span></div>
+        <div class="el-current" id="maintStatus" style="font-size:12px; color: var(--success);">Good</div>
+      </div>
+      <div class="maint-bar-bg">
+        <div class="maint-bar-fill" id="maintFill"></div>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
+        <span id="maintLeft" style="font-size:12px; color:var(--text-secondary); font-family: 'Orbitron', monospace;">-- km left</span>
+        <button class="btn-maint-reset" id="btnMaintReset" onclick="resetMaintenance()">⚙️ Reset</button>
+      </div>
     </div>
 
-    <div class="trip-card" style="margin-top: 16px;">
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-icon">📍</div><div class="stat-value" id="distVal">0.0</div><div class="stat-label" id="lblDist">TRIP km</div></div>
+      <div class="stat-box"><div class="stat-icon">⏱️</div><div class="stat-value" id="timeVal">00:00</div><div class="stat-label" id="lblTime">TIME</div></div>
+      <div class="stat-box"><div class="stat-icon">🔥</div><div class="stat-value" id="maxSpeedVal">0</div><div class="stat-label" id="lblMax">MAX km/h</div></div>
+    </div>
+
+    <div class="trip-card">
       <div class="btn-row">
         <button class="btn-trip start" id="btnStart" onclick="startTrip()">▶ <span id="lblStart">Start Trip</span></button>
         <button class="btn-trip stop" id="btnStop" onclick="stopTrip()" disabled>⏹ <span id="lblStop">Stop</span></button>
@@ -276,7 +291,7 @@ canvas#altGraph { width: 100%; height: 60px; display: block; border-bottom: 1px 
   <div id="sec-map" class="section">
     <div class="map-card">
       <div class="map-header">
-        <div class="map-title">LIVE NAVIGATION</div>
+        <div class="map-title" id="lblMapTitle">LIVE NAVIGATION</div>
         <div class="map-coords" id="mapCoords">-- , --</div>
       </div>
       <div id="map"></div>
@@ -290,22 +305,100 @@ canvas#altGraph { width: 100%; height: 60px; display: block; border-bottom: 1px 
       <div class="route-info-bar" id="routeInfoBar">
         <div>
           <div class="ri-data" id="riDist">0 km</div>
-          <div class="ri-label" id="lblRiDist">දුර (Distance)</div>
+          <div class="ri-label" id="lblRiDist">Distance</div>
         </div>
         <div style="text-align:right;">
           <div class="ri-data" id="riTime">0 min</div>
-          <div class="ri-label" id="lblRiTime">කාලය (ETA)</div>
+          <div class="ri-label" id="lblRiTime">ETA</div>
         </div>
       </div>
     </div>
   </div>
 
 </div><nav class="bottom-nav">
-  <button class="nav-item active" id="nav-speed" onclick="showSection('speed')"><span class="nav-icon">⚡</span><span>Speed</span></button>
-  <button class="nav-item" id="nav-map" onclick="showSection('map')"><span class="nav-icon">🗺️</span><span>Navigate</span></button>
+  <button class="nav-item active" id="nav-speed" onclick="showSection('speed')"><span class="nav-icon">⚡</span><span id="navLblSpeed">Speed</span></button>
+  <button class="nav-item" id="nav-map" onclick="showSection('map')"><span class="nav-icon">🗺️</span><span id="navLblMap">Navigate</span></button>
 </nav>
 
 <script>
+// ========== TRANSLATIONS (Full Coverage) ==========
+const T = {
+  en: { 
+    speed:'SPEED', dist:'TRIP km', time:'TIME', max:'MAX km/h',
+    start:'Start Trip', stop:'Stop', reset:'Reset',
+    mapTitle:'LIVE NAVIGATION', autoFollow:'📍 Auto Follow', route:'🗺️ Route', clear:'❌ Clear',
+    searchLoc: 'Search location...', offlineMap: 'Internet required for map', 
+    elev: 'ELEVATION', maint: 'MAINTENANCE (2500km)', 
+    maintGood: 'Good', maintSoon: 'Service Soon', maintDue: 'Service Due!', maintLeft: 'km left', resetMaint: '⚙️ Reset',
+    devInfo: 'DEVELOPER INFO', close: 'Close',
+    navModeOn: 'Tap map to set destination', navModeOff: '🗺️ Route',
+    hzWarn: 'WARNING', fogAlert: 'Low Visibility!', fogSub: 'Foggy! Drive carefully', rainAlert: 'Rain Alert!', rainSub: 'Rain expected',
+    lblDist:'Distance', lblTime:'ETA',
+    navSpeed:'Speed', navMap:'Navigate'
+  },
+  si: { 
+    speed:'වේගය', dist:'දුර (TRIP)', time:'කාලය', max:'උපරිම වේගය',
+    start:'ආරම්භ කරන්න', stop:'නවතන්න', reset:'යළි සකසන්න',
+    mapTitle:'සජීවී සිතියම', autoFollow:'📍 ස්වයංක්‍රීය', route:'🗺️ මාර්ගය', clear:'❌ මකන්න',
+    searchLoc: 'ස්ථානය සොයන්න...', offlineMap: 'සිතියමට ඉන්ටර්නෙට් අවශ්‍යයි', 
+    elev: 'උන්නතාංශය', maint: 'නඩත්තු සටහන (2500km)', 
+    maintGood: 'යහපත්', maintSoon: 'ළඟදීම සේවාව', maintDue: 'සේවාව අවශ්‍යයි!', maintLeft: 'km ඉතිරියි', resetMaint: '⚙️ සකසන්න',
+    devInfo: 'සංවර්ධක තොරතුරු', close: 'වසන්න',
+    navModeOn: 'ගමනාන්තය සිතියමෙන් තෝරන්න', navModeOff: '🗺️ මාර්ගය',
+    hzWarn: 'අවවාදයි', fogAlert: 'දෘශ්‍යතාව අඩුයි!', fogSub: 'මීදුම සහිතයි! ප්‍රවේශමෙන්', rainAlert: 'වර්ෂා ඇඟවීමක්!', rainSub: 'වර්ෂාව අපේක්ෂා කෙරේ',
+    lblDist:'දුර', lblTime:'කාලය',
+    navSpeed:'වේගය', navMap:'සිතියම'
+  }
+};
+
+let lang = 'si'; 
+function t(key) { return T[lang][key] || key; }
+
+function applyLang() {
+  document.getElementById('lblSpeed').textContent = t('speed');
+  document.getElementById('lblDist').textContent = t('dist');
+  document.getElementById('lblTime').textContent = t('time');
+  document.getElementById('lblMax').textContent = t('max');
+  document.getElementById('lblStart').textContent = t('start');
+  document.getElementById('lblStop').textContent = t('stop');
+  document.getElementById('lblRes').textContent = t('reset');
+  document.getElementById('lblMapTitle').textContent = t('mapTitle');
+  document.getElementById('lblElev').textContent = t('elev');
+  document.getElementById('lblMaint').textContent = t('maint');
+  document.getElementById('btnMaintReset').textContent = t('resetMaint');
+  document.getElementById('lblDevInfoTitle').textContent = t('devInfo');
+  document.getElementById('btnDevClose').textContent = t('close');
+  document.getElementById('alertFogTitle').textContent = t('fogAlert');
+  document.getElementById('alertFogSub').textContent = t('fogSub');
+  document.getElementById('alertRainTitle').textContent = t('rainAlert');
+  document.getElementById('alertRainSub').textContent = t('rainSub');
+  document.getElementById('hzTitle').textContent = t('hzWarn');
+  document.getElementById('lblRiDist').textContent = t('lblDist');
+  document.getElementById('lblRiTime').textContent = t('lblTime');
+  document.getElementById('navLblSpeed').textContent = t('navSpeed');
+  document.getElementById('navLblMap').textContent = t('navMap');
+  
+  if(autoFollowMap) document.getElementById('btnAutoFollow').textContent = t('autoFollow');
+  document.getElementById('btnClearNav').textContent = t('clear');
+
+  const geocoderInput = document.querySelector('.leaflet-control-geocoder-form input');
+  if (geocoderInput) { geocoderInput.placeholder = t('searchLoc'); }
+
+  toggleNavMode(true); 
+  updateMaintenanceUI();
+  
+  if(activeHazardAlert) {
+      let activeHz = safetyHazards.find(h => h.title === activeHazardAlert);
+      if(activeHz) document.getElementById('hzSub').textContent = lang === 'si' ? activeHz.si : activeHz.title;
+  }
+  
+  if(document.getElementById('mwDesc').textContent !== 'Loading...' && document.getElementById('mwDesc').textContent !== 'Offline') {
+      if (currentPos) fetchWeather(); 
+  }
+}
+
+function toggleLang() { lang = lang === 'en' ? 'si' : 'en'; applyLang(); }
+
 // ========== OFFLINE HANDLING & SERVICE WORKER ==========
 function updateOnlineStatus() {
   const badge = document.getElementById('offlineBadge');
@@ -318,10 +411,10 @@ function updateOnlineStatus() {
   }
 }
 window.addEventListener('online', updateOnlineStatus); window.addEventListener('offline', updateOnlineStatus);
-if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(err => console.log('SW setup skipped')); }); }
+if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(e => console.log(e)); }); }
 
 // ========== STATE & AUDIO ==========
-let lang = 'si'; let darkMode = true; let gpsWatcher = null; let currentPos = null; let wakeLock = null;
+let darkMode = true; let gpsWatcher = null; let currentPos = null; let wakeLock = null;
 let map = null, mapMarker = null, mapInitialized = false;
 let pathLine = null, pathCoords = [], routingControl = null, navModeActive = false;
 let autoFollowMap = true; 
@@ -329,7 +422,7 @@ let autoFollowMap = true;
 let smoothedSpeed = 0;
 let trip = { active: false, distance: 0, startTime: null, timerInterval: null, maxSpeed: 0 };
 let odometer = parseFloat(localStorage.getItem('bikeOdo') || '0');
-
+let lastServiceOdo = parseFloat(localStorage.getItem('bikeServiceOdo') || '0');
 let altitudeHistory = []; 
 
 // MOCK HAZARDS
@@ -338,8 +431,7 @@ const safetyHazards = [
   { lat: 6.6510, lon: 80.7040, type: 'hazard', title: 'ROAD HAZARD', si: 'මාර්ගයේ බාධකයක් ඇත', icon: '🚧' },
   { lat: 6.6520, lon: 80.7050, type: 'bridge', title: 'NARROW BRIDGE', si: 'පටු පාලමක්', icon: '🌉' }
 ];
-let activeHazardAlert = null;
-let dismissedHazards = new Set(); 
+let activeHazardAlert = null; let dismissedHazards = new Set(); 
 
 let audioCtx = null;
 function initAudio() {
@@ -360,7 +452,7 @@ document.addEventListener('visibilitychange', async () => {
   if (wakeLock !== null && document.visibilityState === 'visible' && trip.active) { await requestWakeLock(); }
 });
 async function requestWakeLock() {
-  try { if ('wakeLock' in navigator) { wakeLock = await navigator.wakeLock.request('screen'); } } catch (err) { console.log('Wake Lock error'); }
+  try { if ('wakeLock' in navigator) { wakeLock = await navigator.wakeLock.request('screen'); } } catch (err) {}
 }
 
 // ========== BATTERY API ==========
@@ -370,7 +462,7 @@ function initBattery() {
             updateBat(bat);
             bat.addEventListener('levelchange', () => updateBat(bat));
             bat.addEventListener('chargingchange', () => updateBat(bat));
-        }).catch(e => console.log('Battery API blocked'));
+        }).catch(e => {});
     }
 }
 function updateBat(bat) {
@@ -384,20 +476,8 @@ function updateBat(bat) {
 function showDevInfo() { document.getElementById('devModal').classList.add('show'); }
 function closeDevInfo() { document.getElementById('devModal').classList.remove('show'); }
 
-// ========== TRANSLATIONS ==========
-const T = {
-  en: { navModeOn: 'Tap map to set destination', navModeOff: '🗺️ Route', searchLoc: 'Search location...', offlineMap: 'Internet required for map', elev: 'ELEVATION' },
-  si: { navModeOn: 'ගමනාන්තය සිතියමෙන් තෝරන්න', navModeOff: '🗺️ මාර්ගය', searchLoc: 'ස්ථානය සොයන්න...', offlineMap: 'සිතියමට ඉන්ටර්නෙට් අවශ්‍යයි', elev: 'උන්නතාංශය' }
-};
-function t(key) { return T[lang][key] || key; }
-
+// ========== THEME & NAVIGATION ==========
 function toggleTheme() { darkMode = !darkMode; document.body.classList.toggle('light-mode', !darkMode); document.getElementById('themeBtn').textContent = darkMode ? '🌙' : '☀️'; drawAltitudeGraph(); }
-function toggleLang() {
-  lang = lang === 'en' ? 'si' : 'en';
-  document.getElementById('btnNavToggle').textContent = navModeActive ? t('navModeOn') : t('navModeOff');
-  const geocoderInput = document.querySelector('.leaflet-control-geocoder-form input');
-  if (geocoderInput) { geocoderInput.placeholder = t('searchLoc'); }
-}
 
 function showSection(name) {
   ['speed','map'].forEach(s => {
@@ -413,6 +493,48 @@ function showSection(name) {
   } else if (name === 'speed') {
       setTimeout(drawAltitudeGraph, 100);
   }
+}
+
+// ========== MAINTENANCE TRACKER LOGIC ==========
+function updateMaintenanceUI() {
+    const SERVICE_INTERVAL = 2500;
+    let distanceDriven = odometer - lastServiceOdo;
+    let distanceLeft = SERVICE_INTERVAL - distanceDriven;
+    
+    let pct = (distanceDriven / SERVICE_INTERVAL) * 100;
+    pct = Math.max(0, Math.min(100, pct)); 
+    
+    let fill = document.getElementById('maintFill');
+    let statusTxt = document.getElementById('maintStatus');
+    let leftTxt = document.getElementById('maintLeft');
+    
+    fill.style.width = pct + '%';
+    
+    if (distanceLeft <= 0) {
+        fill.style.background = 'var(--danger)';
+        statusTxt.style.color = 'var(--danger)';
+        statusTxt.textContent = t('maintDue');
+        leftTxt.textContent = '0 ' + t('maintLeft');
+    } else if (distanceLeft <= 500) {
+        fill.style.background = 'var(--warning)';
+        statusTxt.style.color = 'var(--warning)';
+        statusTxt.textContent = t('maintSoon');
+        leftTxt.textContent = distanceLeft.toFixed(0) + ' ' + t('maintLeft');
+    } else {
+        fill.style.background = 'var(--success)';
+        statusTxt.style.color = 'var(--success)';
+        statusTxt.textContent = t('maintGood');
+        leftTxt.textContent = distanceLeft.toFixed(0) + ' ' + t('maintLeft');
+    }
+}
+
+function resetMaintenance() {
+    let msg = lang === 'si' ? 'නව සේවා සටහනක් ආරම්භ කරන්නද?' : 'Reset maintenance tracker?';
+    if(confirm(msg)) {
+        lastServiceOdo = odometer;
+        localStorage.setItem('bikeServiceOdo', lastServiceOdo);
+        updateMaintenanceUI();
+    }
 }
 
 // ========== TRIP & AUDIO INIT ==========
@@ -450,17 +572,9 @@ function initMap() {
   map = L.map('map', { zoomControl: false, layers: [darkMap] }).setView([lat, lon], 16);
   L.control.layers({ "Dark Map": darkMap, "Street Map": streetMap, "Satellite": satelliteMap }, {}, {position: 'bottomleft'}).addTo(map);
 
-  // Sri Lanka Optimized Geocoder Search
   L.Control.geocoder({
-      position: 'topleft', 
-      defaultMarkGeocode: false, 
-      placeholder: t('searchLoc'),
-      geocoder: L.Control.Geocoder.nominatim({
-          geocodingQueryParams: {
-              countrycodes: 'lk', // Restricts search to Sri Lanka
-              limit: 10 // Shows more suggestions
-          }
-      })
+      position: 'topleft', defaultMarkGeocode: false, placeholder: t('searchLoc'),
+      geocoder: L.Control.Geocoder.nominatim({ geocodingQueryParams: { countrycodes: 'lk', limit: 10 } })
   }).on('markgeocode', function(e) {
       if(!navigator.onLine) return alert(t('offlineMap'));
       const center = e.geocode.center; map.setView(center, 16); calculateRoute(center); 
@@ -485,7 +599,13 @@ function initMap() {
 
 function centerMap() { if(map && currentPos) map.setView([currentPos.coords.latitude, currentPos.coords.longitude], map.getZoom()); }
 function toggleAutoFollow() { autoFollowMap = true; document.getElementById('btnAutoFollow').classList.add('active'); centerMap(); }
-function toggleNavMode() { navModeActive = !navModeActive; const btn = document.getElementById('btnNavToggle'); if(navModeActive) { btn.classList.add('active'); btn.textContent = t('navModeOn'); } else { btn.classList.remove('active'); btn.textContent = t('navModeOff'); } }
+
+function toggleNavMode(onlyUpdateText = false) {
+    if(!onlyUpdateText) navModeActive = !navModeActive;
+    const btn = document.getElementById('btnNavToggle');
+    if(navModeActive) { btn.classList.add('active'); btn.textContent = t('navModeOn'); } 
+    else { btn.classList.remove('active'); btn.textContent = t('navModeOff'); }
+}
 
 function calculateRoute(destinationLatLng) {
     if (!currentPos || !map) return;
@@ -511,7 +631,7 @@ function clearRoute() { if(routingControl) map.removeControl(routingControl); ro
 
 // ========== GPS & DYNAMIC SPEED SMOOTHING ==========
 function startGPS() {
-  if (!navigator.geolocation) return setGPSStatus('error');
+  if (!navigator.geolocation) return;
   gpsWatcher = navigator.geolocation.watchPosition(onGPSSuccess, onGPSError, { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 });
 }
 
@@ -599,7 +719,9 @@ function onGPSSuccess(pos) {
         trip.distance += d;
         odometer += d;
         localStorage.setItem('bikeOdo', odometer.toFixed(3));
+        document.getElementById('mainOdo').textContent = 'ODO: ' + odometer.toFixed(1) + ' km';
         document.getElementById('distVal').textContent = trip.distance.toFixed(1);
+        updateMaintenanceUI(); 
     }
     if (finalSpeed > trip.maxSpeed) {
         trip.maxSpeed = finalSpeed;
@@ -714,6 +836,9 @@ async function fetchWeather() {
   } catch(e) { console.log("Weather failed"); }
 }
 
+// Initial UI Setup
+document.getElementById('mainOdo').textContent = 'ODO: ' + odometer.toFixed(1) + ' km';
+applyLang();
 drawTicks(); updateOnlineStatus(); startGPS(); initBattery();
 </script>
 </body>
