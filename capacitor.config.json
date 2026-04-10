@@ -1,0 +1,10 @@
+{
+  "appId": "com.cruiser.app",
+  "appName": "Cruiser",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "server": {
+    "url": "https://chami777.github.io/Cruiser",
+    "cleartext": true
+  }
+}
