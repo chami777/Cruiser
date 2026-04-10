@@ -27,60 +27,73 @@
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 body { font-family: 'Rajdhani', sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; overflow-x: hidden; transition: all 0.4s ease; }
 body::before { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse at 20% 10%, rgba(0,229,255,0.06) 0%, transparent 50%), radial-gradient(ellipse at 80% 80%, rgba(191,90,242,0.05) 0%, transparent 50%); pointer-events: none; z-index: 0; }
+
 .header { position: sticky; top: 0; z-index: 100; background: rgba(8, 12, 24, 0.92); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; }
 .light-mode .header { background: rgba(232, 237, 245, 0.92); }
 .header-logo { font-family: 'Orbitron', monospace; font-size: 18px; font-weight: 900; color: var(--accent); text-shadow: var(--glow); letter-spacing: 2px; }
 .header-logo span { color: var(--accent2); }
 .header-controls { display: flex; gap: 10px; align-items: center; }
-.btn-icon { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary); width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; transition: all 0.2s; }
+
+/* Battery Indicator */
+.battery-bar { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--text-muted); font-family: 'Orbitron', monospace; font-weight: 600;}
+
+.btn-icon { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary); width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; transition: all 0.2s; }
 .btn-icon:hover, .btn-icon.active { background: var(--bg-card-hover); border-color: var(--accent); color: var(--accent); box-shadow: var(--glow); }
 .main { position: relative; z-index: 1; padding: 16px; max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; padding-bottom: 90px; }
 
-/* === IMPROVED HAZARD ALERT UI === */
-.hazard-alert {
-  position: fixed; top: 20px; left: 50%;
-  transform: translate(-50%, -150%);
-  width: 92%; max-width: 420px; z-index: 9999;
-  background: linear-gradient(135deg, rgba(255,0,68,0.95), rgba(139,0,0,0.95));
-  border: 2px solid #ff4d4d; border-radius: 20px; padding: 20px;
-  display: flex; align-items: center; gap: 16px;
-  box-shadow: 0 15px 40px rgba(255, 0, 68, 0.5);
-  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  backdrop-filter: blur(15px);
-}
-.hazard-alert.show {
-  transform: translate(-50%, 0);
-  animation: pulseAlert 0.8s infinite alternate;
-}
-@keyframes pulseAlert {
-  from { box-shadow: 0 10px 30px rgba(255, 0, 68, 0.4); border-color: #ff4d4d; }
-  to { box-shadow: 0 10px 60px rgba(255, 0, 68, 0.9), inset 0 0 20px rgba(255,255,255,0.2); border-color: #fff; }
-}
-.hazard-icon { font-size: 45px; animation: wobble 1.5s infinite; filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); }
+/* HAZARD ALERT UI */
+.hazard-alert { position: fixed; top: 20px; left: 50%; transform: translate(-50%, -150%); width: 92%; max-width: 420px; z-index: 9999; background: linear-gradient(135deg, rgba(255,0,68,0.95), rgba(139,0,0,0.95)); border: 2px solid #ff4d4d; border-radius: 20px; padding: 16px 20px; display: flex; align-items: center; gap: 14px; box-shadow: 0 15px 40px rgba(255, 0, 68, 0.5); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); backdrop-filter: blur(15px); }
+.hazard-alert.show { transform: translate(-50%, 0); animation: pulseAlert 0.8s infinite alternate; }
+@keyframes pulseAlert { from { box-shadow: 0 10px 30px rgba(255, 0, 68, 0.4); border-color: #ff4d4d; } to { box-shadow: 0 10px 60px rgba(255, 0, 68, 0.9), inset 0 0 20px rgba(255,255,255,0.2); border-color: #fff; } }
+.hazard-icon { font-size: 40px; animation: wobble 1.5s infinite; filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); }
 @keyframes wobble { 0%,100%{transform:rotate(-15deg) scale(1);} 50%{transform:rotate(15deg) scale(1.1);} }
 .hazard-text { flex: 1; color: #fff; }
-.hazard-title { font-weight: 900; font-size: 20px; text-transform: uppercase; font-family: 'Orbitron', monospace; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-.hazard-sub { font-size: 15px; font-family: 'Noto Sans Sinhala', sans-serif; margin-top: 4px; font-weight: 600; opacity: 0.9; }
-.hazard-dist { font-size: 20px; font-weight: 900; background: rgba(0,0,0,0.4); padding: 8px 14px; border-radius: 12px; font-family: 'Orbitron', monospace; color: #ffeb3b; border: 1px solid rgba(255,235,59,0.3); }
+.hazard-title { font-weight: 900; font-size: 18px; text-transform: uppercase; font-family: 'Orbitron', monospace; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+.hazard-sub { font-size: 14px; font-family: 'Noto Sans Sinhala', sans-serif; margin-top: 2px; font-weight: 600; opacity: 0.9; }
+.hazard-dist { font-size: 18px; font-weight: 900; background: rgba(0,0,0,0.4); padding: 6px 12px; border-radius: 10px; font-family: 'Orbitron', monospace; color: #ffeb3b; border: 1px solid rgba(255,235,59,0.3); }
+.hazard-close { background: rgba(0,0,0,0.3); color: #fff; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; width: 32px; height: 32px; display: flex; justify-content: center; align-items: center; cursor: pointer; font-size: 14px; transition: 0.2s; margin-left: 5px; }
+.hazard-close:hover { background: rgba(255,255,255,0.2); transform: scale(1.1); }
+
+/* ALERTS BANNER (WEATHER) */
+.alert-banner { border-radius: 14px; padding: 12px 16px; display: flex; align-items: center; gap: 12px; font-size: 13px; animation: slideIn 0.3s ease; display: none; margin-bottom: 8px;}
+@keyframes slideIn { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:none; } }
+.alert-banner.show { display: flex; }
+.alert-banner.rain { background: rgba(0,100,255,0.15); border: 1px solid rgba(0,150,255,0.3); }
+.alert-banner.heat { background: rgba(255,100,0,0.15); border: 1px solid rgba(255,130,0,0.3); }
+.alert-banner.wind { background: rgba(100,200,255,0.15); border: 1px solid rgba(100,200,255,0.3); }
+.alert-banner.fog { background: rgba(150,150,150,0.15); border: 1px solid rgba(200,200,200,0.4); } /* FOG ALERT */
+.alert-icon { font-size: 24px; }
+.alert-text { flex: 1; }
+.alert-title { font-weight: 600; color: var(--text-primary); }
+.alert-sub { font-size: 11px; color: var(--text-secondary); font-family: 'Noto Sans Sinhala', sans-serif; }
 
 /* SPEEDOMETER */
 .speed-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 24px; padding: 24px 20px; backdrop-filter: blur(20px); box-shadow: var(--shadow-deep); text-align: center; position: relative; overflow: hidden; }
 .speed-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(from 180deg at 50% 50%, transparent 60%, rgba(0,229,255,0.04) 80%, transparent 100%); animation: rotate 8s linear infinite; }
-@keyframes rotate { to { transform: rotate(360deg); } }
 .speed-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; font-family: 'Orbitron', monospace; }
 .speed-display { position: relative; z-index: 1; margin: 10px 0; }
 .speed-number { font-family: 'Orbitron', monospace; font-size: clamp(72px, 22vw, 96px); font-weight: 900; color: var(--accent); line-height: 1; text-shadow: 0 0 30px rgba(0,229,255,0.6), 0 0 60px rgba(0,229,255,0.3); transition: color 0.3s, text-shadow 0.3s; }
 .speed-number.warn { color: var(--warning); text-shadow: 0 0 30px rgba(255,204,0,0.6); }
 .speed-number.danger { color: var(--danger); text-shadow: 0 0 30px rgba(255,0,68,0.6); animation: pulse 0.5s infinite alternate; }
-@keyframes pulse { from { opacity: 1; } to { opacity: 0.7; } }
 .speed-unit { font-family: 'Orbitron', monospace; font-size: 16px; color: var(--text-secondary); letter-spacing: 2px; }
 .arc-wrap { position: relative; width: 200px; height: 110px; margin: 0 auto 8px; }
 .arc-svg { width: 100%; height: 100%; }
+#speedArc { transition: stroke-dashoffset 0.4s ease-out, stroke 0.4s ease-out; }
+
 .mini-weather { background: rgba(0, 229, 255, 0.05); border: 1px solid var(--border); border-radius: 12px; padding: 8px 12px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; cursor: pointer; transition: all 0.2s; position: relative; z-index: 10; }
 .mini-weather:hover { background: rgba(0, 229, 255, 0.1); border-color: var(--border-bright); }
 .mw-icon { font-size: 18px; }
 .mw-temp { font-family: 'Orbitron', monospace; font-weight: 700; color: var(--text-primary); }
 .mw-desc { font-size: 12px; color: var(--text-secondary); font-family: 'Noto Sans Sinhala', sans-serif; }
+
+/* ELEVATION GRAPH */
+.elevation-card { background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 16px; padding: 12px; margin-top: 16px; backdrop-filter: blur(10px);}
+.el-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.el-title { font-family: 'Orbitron', monospace; font-size: 10px; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; }
+.el-title-si { font-size: 10px; color: var(--text-secondary); font-family: 'Noto Sans Sinhala', sans-serif; }
+.el-current { font-family: 'Orbitron', monospace; font-size: 16px; color: var(--accent4); font-weight: 700; }
+canvas#altGraph { width: 100%; height: 60px; display: block; border-bottom: 1px solid rgba(255,255,255,0.05); }
+
 .stats-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
 .stat-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 14px 10px; text-align: center; backdrop-filter: blur(15px); transition: all 0.3s; cursor: default; }
 .stat-box:hover { border-color: var(--border-bright); box-shadow: var(--glow); }
@@ -88,14 +101,18 @@ body::before { content: ''; position: fixed; inset: 0; background: radial-gradie
 .stat-value { font-family: 'Orbitron', monospace; font-size: 18px; font-weight: 700; color: var(--accent); }
 .stat-label { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; margin-top: 2px; }
 .stat-sub { font-size: 10px; color: var(--text-secondary); margin-top: 2px; font-family: 'Noto Sans Sinhala', sans-serif; }
+
 .map-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow-deep); position: relative; }
 .map-header { padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
 .map-title { font-family: 'Orbitron', monospace; font-size: 11px; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; }
 .map-coords { font-size: 11px; color: var(--text-secondary); font-family: monospace; }
 #map { height: 350px; width: 100%; z-index: 1;}
+
 .map-controls-overlay { position: absolute; top: 60px; right: 10px; z-index: 1000; display: flex; flex-direction: column; gap: 8px; }
-.btn-map-action { background: rgba(15, 20, 40, 0.9); border: 1px solid var(--accent); color: var(--accent); padding: 8px 12px; border-radius: 8px; font-weight: 600; font-family: 'Rajdhani', sans-serif; cursor: pointer; box-shadow: var(--glow); backdrop-filter: blur(5px); }
-.btn-map-action.active { background: var(--accent); color: #000; }
+.btn-map-action { background: rgba(15, 20, 40, 0.9); border: 1px solid var(--accent); color: var(--accent); padding: 8px 12px; border-radius: 8px; font-weight: 600; font-family: 'Rajdhani', sans-serif; cursor: pointer; box-shadow: var(--glow); backdrop-filter: blur(5px); transition: all 0.2s;}
+.btn-map-action.active { background: var(--accent); color: #000; box-shadow: 0 0 15px var(--accent);}
+.btn-map-action:hover { transform: scale(1.05); }
+
 .leaflet-routing-container { display: none !important; }
 .leaflet-control-geocoder { background: rgba(15, 20, 40, 0.9) !important; border: 1px solid var(--accent) !important; border-radius: 8px !important; backdrop-filter: blur(5px); margin-top: 10px !important; margin-left: 10px !important;}
 .leaflet-control-geocoder-form input { background: transparent !important; color: #fff !important; border: none !important; outline: none !important; font-family: 'Noto Sans Sinhala', sans-serif; }
@@ -104,14 +121,20 @@ body::before { content: ''; position: fixed; inset: 0; background: radial-gradie
 .leaflet-control-geocoder-alternatives { background: var(--bg-secondary) !important; color: #fff; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-top: 4px !important;}
 .leaflet-control-geocoder-alternatives li { padding: 8px !important; border-bottom: 1px solid rgba(255,255,255,0.05); }
 .leaflet-control-geocoder-alternatives li:hover { background: var(--accent) !important; color: #000 !important; }
+
+.leaflet-control-layers { background: rgba(15, 20, 40, 0.9) !important; border: 1px solid var(--border) !important; border-radius: 8px !important; color: var(--text-primary) !important; backdrop-filter: blur(5px); font-family: 'Rajdhani', sans-serif;}
+
 .light-mode .leaflet-control-geocoder { background: rgba(255, 255, 255, 0.9) !important; border-color: var(--border-bright) !important;}
 .light-mode .leaflet-control-geocoder-form input { color: #000 !important; }
 .light-mode .leaflet-control-geocoder-icon { filter: none; }
 .light-mode .leaflet-control-geocoder-alternatives { background: #fff !important; color: #000; }
+.light-mode .leaflet-control-layers { background: rgba(255, 255, 255, 0.9) !important; color: #000 !important;}
+
 .route-info-bar { background: var(--bg-secondary); border-top: 1px solid var(--border); padding: 10px 16px; display: none; justify-content: space-between; align-items: center; }
 .route-info-bar.show { display: flex; }
 .ri-data { font-family: 'Orbitron', monospace; color: var(--accent3); font-weight: 700; font-size: 14px;}
 .ri-label { font-size: 10px; color: var(--text-muted); font-family: 'Noto Sans Sinhala', sans-serif;}
+
 .section { display: none; }
 .section.active { display: block; }
 .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; background: rgba(8,12,24,0.95); backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; padding: 8px 16px 16px; gap: 4px; }
@@ -130,9 +153,11 @@ body::before { content: ''; position: fixed; inset: 0; background: radial-gradie
   <div class="header-logo">CRUISER<span>PRO</span></div>
   <div class="header-controls">
     <div id="offlineBadge">OFFLINE</div>
-    <div class="gps-bar" style="padding:0;background:none;gap:6px;">
+    <div class="battery-bar" id="batBar">
+        <span id="batIcon">🔋</span><span id="batLevel">--%</span>
+    </div>
+    <div class="gps-bar" style="padding:0;background:none;gap:6px; margin-right: 5px;">
       <div class="gps-dot" id="gpsDot"></div>
-      <span id="gpsStatus" style="font-size:10px;font-family:monospace;">GPS...</span>
     </div>
     <button class="btn-icon" id="langBtn" title="Language" onclick="toggleLang()">🌐</button>
     <button class="btn-icon" id="themeBtn" title="Dark/Light" onclick="toggleTheme()">🌙</button>
@@ -146,9 +171,26 @@ body::before { content: ''; position: fixed; inset: 0; background: radial-gradie
     <div class="hazard-sub" id="hzSub">අනතුරුදායක කලාපයකි</div>
   </div>
   <div class="hazard-dist" id="hzDist">500m</div>
+  <button class="hazard-close" onclick="dismissHazard()">✖</button>
 </div>
 
 <div class="main">
+
+  <div class="alert-banner fog" id="alertFog">
+    <div class="alert-icon">🌫️</div>
+    <div class="alert-text">
+      <div class="alert-title" id="alertFogTitle">Low Visibility!</div>
+      <div class="alert-sub" id="alertFogSub">මීදුම සහිතයි! ප්‍රවේශමෙන් ධාවනය කරන්න</div>
+    </div>
+  </div>
+
+  <div class="alert-banner rain" id="alertRain">
+    <div class="alert-icon">🌧️</div>
+    <div class="alert-text">
+      <div class="alert-title" id="alertRainTitle">Rain Alert!</div>
+      <div class="alert-sub" id="alertRainSub">වර්ෂාව අපේක්ෂා කෙරේ</div>
+    </div>
+  </div>
 
   <div id="sec-speed" class="section active">
     <div class="speed-card">
@@ -173,10 +215,21 @@ body::before { content: ''; position: fixed; inset: 0; background: radial-gradie
       </div>
     </div>
 
-    <div class="stats-row">
+    <div class="elevation-card">
+        <div class="el-header">
+            <div>
+                <span class="el-title" id="lblElev">ELEVATION</span>
+                <span class="el-title-si" id="lblElevSi">උන්නතාංශය</span>
+            </div>
+            <div class="el-current"><span id="altGVal">0</span> m</div>
+        </div>
+        <canvas id="altGraph" width="400" height="60"></canvas>
+    </div>
+
+    <div class="stats-row" style="margin-top: 16px;">
       <div class="stat-box"><div class="stat-icon">📍</div><div class="stat-value" id="distVal">0.0</div><div class="stat-label">DIST km</div></div>
       <div class="stat-box"><div class="stat-icon">⏱️</div><div class="stat-value" id="timeVal">00:00</div><div class="stat-label">TIME</div></div>
-      <div class="stat-box"><div class="stat-icon">📡</div><div class="stat-value" id="altVal">0</div><div class="stat-label">ALT m</div></div>
+      <div class="stat-box"><div class="stat-icon">🔥</div><div class="stat-value" id="maxSpeedVal">0</div><div class="stat-label">MAX km/h</div></div>
     </div>
 
     <div class="trip-card" style="margin-top: 16px;">
@@ -197,7 +250,7 @@ body::before { content: ''; position: fixed; inset: 0; background: radial-gradie
       <div id="map"></div>
       
       <div class="map-controls-overlay">
-        <button class="btn-map-action" onclick="centerMap()">📍 Center</button>
+        <button class="btn-map-action active" id="btnAutoFollow" onclick="toggleAutoFollow()">📍 Auto Follow</button>
         <button class="btn-map-action" id="btnNavToggle" onclick="toggleNavMode()">🗺️ Route</button>
         <button class="btn-map-action" id="btnClearNav" onclick="clearRoute()" style="display:none; color:var(--danger); border-color:var(--danger)">❌ Clear</button>
       </div>
@@ -217,7 +270,6 @@ body::before { content: ''; position: fixed; inset: 0; background: radial-gradie
 
 </div><nav class="bottom-nav">
   <button class="nav-item active" id="nav-speed" onclick="showSection('speed')"><span class="nav-icon">⚡</span><span>Speed</span></button>
-  <button class="nav-item" id="nav-weather" onclick="showSection('weather')"><span class="nav-icon">🌤️</span><span>Weather</span></button>
   <button class="nav-item" id="nav-map" onclick="showSection('map')"><span class="nav-icon">🗺️</span><span>Navigate</span></button>
 </nav>
 
@@ -227,88 +279,83 @@ function updateOnlineStatus() {
   const badge = document.getElementById('offlineBadge');
   if (navigator.onLine) {
     badge.style.display = 'none';
-    if(currentPos && document.getElementById('mwDesc').textContent === 'Offline') {
-      fetchWeather(); 
-    }
+    if(currentPos && document.getElementById('mwDesc').textContent === 'Offline') fetchWeather(); 
   } else {
-    badge.style.display = 'block';
-    document.getElementById('mwDesc').textContent = 'Offline';
-    document.getElementById('mwIcon').textContent = '🚫';
-    document.getElementById('mwTemp').textContent = '--';
+    badge.style.display = 'block'; document.getElementById('mwDesc').textContent = 'Offline';
+    document.getElementById('mwIcon').textContent = '🚫'; document.getElementById('mwTemp').textContent = '--';
   }
 }
-
-window.addEventListener('online', updateOnlineStatus);
-window.addEventListener('offline', updateOnlineStatus);
-
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js').catch(err => console.log('SW setup skipped/failed'));
-  });
-}
+window.addEventListener('online', updateOnlineStatus); window.addEventListener('offline', updateOnlineStatus);
+if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(err => console.log('SW setup skipped')); }); }
 
 // ========== STATE & AUDIO ==========
-let lang = 'si';
-let darkMode = true;
-let gpsWatcher = null;
-let currentPos = null;
-let wakeLock = null;
-
+let lang = 'si'; let darkMode = true; let gpsWatcher = null; let currentPos = null; let wakeLock = null;
 let map = null, mapMarker = null, mapInitialized = false;
 let pathLine = null, pathCoords = [], routingControl = null, navModeActive = false;
+let autoFollowMap = true; 
 
 let smoothedSpeed = 0;
-const SPEED_SMOOTHING_FACTOR = 0.3; 
-let trip = { active: false, distance: 0, startTime: null, timerInterval: null };
+let trip = { active: false, distance: 0, startTime: null, timerInterval: null, maxSpeed: 0 };
 let odometer = parseFloat(localStorage.getItem('bikeOdo') || '0');
 
-// NEW MOCK HAZARDS (Sri Lanka Context - Sharp Curves & Obstacles)
+let altitudeHistory = []; // For Elevation Graph
+
+// MOCK HAZARDS
 const safetyHazards = [
   { lat: 6.6495, lon: 80.7025, type: 'curve', title: 'SHARP CURVE', si: 'ඉදිරියෙන් තියුණු වංගුවකි', icon: '↪️' },
   { lat: 6.6510, lon: 80.7040, type: 'hazard', title: 'ROAD HAZARD', si: 'මාර්ගයේ බාධකයක් ඇත', icon: '🚧' },
   { lat: 6.6520, lon: 80.7050, type: 'bridge', title: 'NARROW BRIDGE', si: 'පටු පාලමක්', icon: '🌉' }
 ];
 let activeHazardAlert = null;
+let dismissedHazards = new Set(); 
 
 let audioCtx = null;
 function initAudio() {
     if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
     if (audioCtx.state === 'suspended') { audioCtx.resume(); }
 }
-
 function playWarningBeep() {
     if(!audioCtx) return; 
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = 'square';
-    osc.frequency.setValueAtTime(800, audioCtx.currentTime); 
+    const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+    osc.type = 'square'; osc.frequency.setValueAtTime(800, audioCtx.currentTime); 
     osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.3);
-    gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+    gain.gain.setValueAtTime(0.5, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
     osc.connect(gain); gain.connect(audioCtx.destination);
     osc.start(); osc.stop(audioCtx.currentTime + 0.3);
 }
 
 document.addEventListener('visibilitychange', async () => {
-  if (wakeLock !== null && document.visibilityState === 'visible' && trip.active) {
-    await requestWakeLock();
-  }
+  if (wakeLock !== null && document.visibilityState === 'visible' && trip.active) { await requestWakeLock(); }
 });
-
 async function requestWakeLock() {
-  try {
-    if ('wakeLock' in navigator) { wakeLock = await navigator.wakeLock.request('screen'); }
-  } catch (err) { console.error('Wake Lock error:', err); }
+  try { if ('wakeLock' in navigator) { wakeLock = await navigator.wakeLock.request('screen'); } } catch (err) { console.log('Wake Lock error'); }
+}
+
+// ========== BATTERY API ==========
+function initBattery() {
+    if('getBattery' in navigator) {
+        navigator.getBattery().then(bat => {
+            updateBat(bat);
+            bat.addEventListener('levelchange', () => updateBat(bat));
+            bat.addEventListener('chargingchange', () => updateBat(bat));
+        }).catch(e => console.log('Battery API blocked'));
+    }
+}
+function updateBat(bat) {
+    const level = Math.round(bat.level * 100);
+    document.getElementById('batLevel').textContent = level + '%';
+    document.getElementById('batIcon').textContent = bat.charging ? '⚡' : (level < 20 ? '🪫' : '🔋');
+    document.getElementById('batBar').style.color = (level < 20 && !bat.charging) ? 'var(--danger)' : 'var(--text-muted)';
 }
 
 // ========== TRANSLATIONS ==========
 const T = {
-  en: { gpsWait:'Getting GPS...',gpsOn:'GPS Active', gpsErr:'GPS Error', navModeOn: 'Tap map to set destination', navModeOff: '🗺️ Route', searchLoc: 'Search location...', offlineMap: 'Internet required for map' },
-  si: { gpsWait:'GPS ලබා ගනිමින්...', gpsOn:'GPS ක්‍රියාකාරී', gpsErr:'GPS දෝෂය', navModeOn: 'ගමනාන්තය සිතියමෙන් තෝරන්න', navModeOff: '🗺️ මාර්ගය', searchLoc: 'ස්ථානය සොයන්න...', offlineMap: 'සිතියමට ඉන්ටර්නෙට් අවශ්‍යයි' }
+  en: { navModeOn: 'Tap map to set destination', navModeOff: '🗺️ Route', searchLoc: 'Search location...', offlineMap: 'Internet required for map', elev: 'ELEVATION' },
+  si: { navModeOn: 'ගමනාන්තය සිතියමෙන් තෝරන්න', navModeOff: '🗺️ මාර්ගය', searchLoc: 'ස්ථානය සොයන්න...', offlineMap: 'සිතියමට ඉන්ටර්නෙට් අවශ්‍යයි', elev: 'උන්නතාංශය' }
 };
 function t(key) { return T[lang][key] || key; }
 
-function toggleTheme() { darkMode = !darkMode; document.body.classList.toggle('light-mode', !darkMode); document.getElementById('themeBtn').textContent = darkMode ? '🌙' : '☀️'; }
+function toggleTheme() { darkMode = !darkMode; document.body.classList.toggle('light-mode', !darkMode); document.getElementById('themeBtn').textContent = darkMode ? '🌙' : '☀️'; drawAltitudeGraph(); }
 function toggleLang() {
   lang = lang === 'en' ? 'si' : 'en';
   document.getElementById('btnNavToggle').textContent = navModeActive ? t('navModeOn') : t('navModeOff');
@@ -326,31 +373,27 @@ function showSection(name) {
   
   if (name === 'map') {
     if (!mapInitialized) initMap();
-    else { setTimeout(() => { if(map) map.invalidateSize(); centerMap(); }, 100); }
+    else { setTimeout(() => { if(map) map.invalidateSize(); if(autoFollowMap) centerMap(); }, 100); }
+  } else if (name === 'speed') {
+      setTimeout(drawAltitudeGraph, 100);
   }
 }
 
 // ========== TRIP & AUDIO INIT ==========
 function startTrip() {
-  initAudio(); 
-  requestWakeLock();
-  trip.active = true; trip.startTime = Date.now(); trip.distance = 0;
+  initAudio(); requestWakeLock();
+  trip.active = true; trip.startTime = Date.now(); trip.distance = 0; trip.maxSpeed = 0;
+  altitudeHistory = []; // Reset elevation graph
   document.getElementById('btnStart').disabled = true; document.getElementById('btnStop').disabled = false;
   trip.timerInterval = setInterval(updateTimer, 1000);
 }
-
 function stopTrip() {
   if (!trip.active) return;
-  if (wakeLock !== null) { wakeLock.release().then(() => { wakeLock = null; }).catch(e => console.error(e)); }
+  if (wakeLock !== null) { wakeLock.release().then(() => { wakeLock = null; }).catch(e => console.log(e)); }
   trip.active = false; clearInterval(trip.timerInterval);
   document.getElementById('btnStart').disabled = false; document.getElementById('btnStop').disabled = true;
 }
-
-function resetTrip() {
-  stopTrip(); trip.distance = 0;
-  document.getElementById('distVal').textContent = '0.0'; document.getElementById('timeVal').textContent = '00:00';
-}
-
+function resetTrip() { stopTrip(); trip.distance = 0; trip.maxSpeed = 0; altitudeHistory = []; document.getElementById('distVal').textContent = '0.0'; document.getElementById('timeVal').textContent = '00:00'; document.getElementById('maxSpeedVal').textContent = '0'; drawAltitudeGraph();}
 function updateTimer() {
   if (!trip.startTime) return;
   const s = Math.floor((Date.now() - trip.startTime) / 1000);
@@ -364,9 +407,13 @@ function initMap() {
   const lat = currentPos ? currentPos.coords.latitude : 6.6483;
   const lon = currentPos ? currentPos.coords.longitude : 80.7011;
   
-  map = L.map('map', { zoomControl: false }).setView([lat, lon], 16);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
-  
+  const darkMap = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19, attribution: '© CARTO' });
+  const streetMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OSM' });
+  const satelliteMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19, attribution: '© Esri' });
+
+  map = L.map('map', { zoomControl: false, layers: [darkMap] }).setView([lat, lon], 16);
+  L.control.layers({ "Dark Map": darkMap, "Street Map": streetMap, "Satellite": satelliteMap }, {}, {position: 'bottomleft'}).addTo(map);
+
   L.Control.geocoder({
       position: 'topleft', defaultMarkGeocode: false, placeholder: t('searchLoc')
   }).on('markgeocode', function(e) {
@@ -386,26 +433,21 @@ function initMap() {
     calculateRoute(e.latlng);
   });
 
+  map.on('dragstart', function() { autoFollowMap = false; document.getElementById('btnAutoFollow').classList.remove('active'); });
+
   setTimeout(() => map.invalidateSize(), 100);
 }
 
-function centerMap() { if(map && currentPos) map.setView([currentPos.coords.latitude, currentPos.coords.longitude], 16); }
-
-function toggleNavMode() {
-    navModeActive = !navModeActive;
-    const btn = document.getElementById('btnNavToggle');
-    if(navModeActive) { btn.classList.add('active'); btn.textContent = t('navModeOn'); } 
-    else { btn.classList.remove('active'); btn.textContent = t('navModeOff'); }
-}
+function centerMap() { if(map && currentPos) map.setView([currentPos.coords.latitude, currentPos.coords.longitude], map.getZoom()); }
+function toggleAutoFollow() { autoFollowMap = true; document.getElementById('btnAutoFollow').classList.add('active'); centerMap(); }
+function toggleNavMode() { navModeActive = !navModeActive; const btn = document.getElementById('btnNavToggle'); if(navModeActive) { btn.classList.add('active'); btn.textContent = t('navModeOn'); } else { btn.classList.remove('active'); btn.textContent = t('navModeOff'); } }
 
 function calculateRoute(destinationLatLng) {
     if (!currentPos || !map) return;
     if (routingControl) { map.removeControl(routingControl); }
     
     document.getElementById('btnClearNav').style.display = 'block';
-    navModeActive = false;
-    document.getElementById('btnNavToggle').classList.remove('active');
-    document.getElementById('btnNavToggle').textContent = t('navModeOff');
+    navModeActive = false; document.getElementById('btnNavToggle').classList.remove('active'); document.getElementById('btnNavToggle').textContent = t('navModeOff');
     
     routingControl = L.Routing.control({
         waypoints: [ L.latLng(currentPos.coords.latitude, currentPos.coords.longitude), destinationLatLng ],
@@ -417,72 +459,114 @@ function calculateRoute(destinationLatLng) {
         document.getElementById('routeInfoBar').classList.add('show');
         document.getElementById('riDist').textContent = (summary.totalDistance / 1000).toFixed(1) + ' km';
         document.getElementById('riTime').textContent = Math.round(summary.totalTime / 60) + ' min';
+        toggleAutoFollow(); 
     }).addTo(map);
 }
+function clearRoute() { if(routingControl) map.removeControl(routingControl); routingControl = null; document.getElementById('routeInfoBar').classList.remove('show'); document.getElementById('btnClearNav').style.display = 'none'; toggleAutoFollow(); }
 
-function clearRoute() {
-    if(routingControl) map.removeControl(routingControl);
-    routingControl = null;
-    document.getElementById('routeInfoBar').classList.remove('show');
-    document.getElementById('btnClearNav').style.display = 'none';
-    centerMap();
-}
-
-// ========== GPS & SPEED SMOOTHING ==========
+// ========== GPS & DYNAMIC SPEED SMOOTHING ==========
 function startGPS() {
   if (!navigator.geolocation) return setGPSStatus('error');
-  setGPSStatus('waiting');
   gpsWatcher = navigator.geolocation.watchPosition(onGPSSuccess, onGPSError, { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 });
+}
+
+function getSmoothedSpeed(rawSpeed) {
+    if (rawSpeed < 2.0) return 0; 
+    let speedDiff = Math.abs(rawSpeed - smoothedSpeed);
+    let alpha = 0.15 + (Math.min(speedDiff, 20) / 20) * 0.4;
+    smoothedSpeed = (alpha * rawSpeed) + ((1 - alpha) * smoothedSpeed);
+    return smoothedSpeed;
+}
+
+function updateAltitudeGraph(alt) {
+    if(!alt || alt < -100 || alt > 9000) return; // sanity check
+    altitudeHistory.push(alt);
+    if(altitudeHistory.length > 30) altitudeHistory.shift(); // Keep last 30 readings
+    document.getElementById('altGVal').textContent = Math.round(alt);
+    drawAltitudeGraph();
+}
+
+function drawAltitudeGraph() {
+    const canvas = document.getElementById('altGraph');
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const w = canvas.width; const h = canvas.height;
+    ctx.clearRect(0,0,w,h);
+    
+    if(altitudeHistory.length < 2) return;
+    
+    const maxAlt = Math.max(...altitudeHistory, 100);
+    const minAlt = Math.min(...altitudeHistory, 0);
+    const range = (maxAlt - minAlt) || 1;
+    const stepX = w / (30 - 1); // Fixed width steps based on max items
+    
+    // Draw fill
+    ctx.beginPath();
+    ctx.moveTo(0, h);
+    altitudeHistory.forEach((alt, i) => {
+        const x = i * stepX;
+        const y = h - ((alt - minAlt) / range) * (h - 10) - 5;
+        ctx.lineTo(x, y);
+    });
+    ctx.lineTo((altitudeHistory.length - 1) * stepX, h);
+    ctx.fillStyle = darkMode ? 'rgba(0, 229, 255, 0.15)' : 'rgba(0, 102, 204, 0.15)';
+    ctx.fill();
+
+    // Draw Line
+    ctx.beginPath();
+    altitudeHistory.forEach((alt, i) => {
+        const x = i * stepX;
+        const y = h - ((alt - minAlt) / range) * (h - 10) - 5;
+        if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    });
+    ctx.strokeStyle = darkMode ? '#00e5ff' : '#0066cc';
+    ctx.lineWidth = 2;
+    ctx.stroke();
 }
 
 function onGPSSuccess(pos) {
   if (pos.coords.accuracy > 20) return; 
-  setGPSStatus('active');
+  document.getElementById('gpsDot').classList.add('active');
   
   let rawSpeedKmh = pos.coords.speed ? (pos.coords.speed * 3.6) : 0;
-  if (rawSpeedKmh < 2.5) rawSpeedKmh = 0; 
-  smoothedSpeed = (SPEED_SMOOTHING_FACTOR * rawSpeedKmh) + ((1 - SPEED_SMOOTHING_FACTOR) * smoothedSpeed);
-  if (smoothedSpeed < 1) smoothedSpeed = 0;
+  let finalSpeed = getSmoothedSpeed(rawSpeedKmh);
 
   if(!currentPos && navigator.onLine) { currentPos = pos; fetchWeather(); }
   currentPos = pos;
   
-  updateSpeed(smoothedSpeed);
+  updateSpeed(finalSpeed);
   checkHazards(pos.coords.latitude, pos.coords.longitude);
 
-  document.getElementById('altVal').textContent = pos.coords.altitude ? Math.round(pos.coords.altitude) : 0;
+  if(trip.active && pos.coords.altitude) updateAltitudeGraph(pos.coords.altitude);
+
   document.getElementById('mapCoords').textContent = pos.coords.latitude.toFixed(5) + ', ' + pos.coords.longitude.toFixed(5);
 
   if (mapInitialized && map) {
     const latlng = [pos.coords.latitude, pos.coords.longitude];
     if (mapMarker) mapMarker.setLatLng(latlng);
+    if (autoFollowMap) { map.panTo(latlng, {animate: true, duration: 1.0}); }
     if (pathCoords.length === 0 || latlng[0] !== pathCoords[pathCoords.length-1][0]) {
       pathCoords.push(latlng); if (pathLine) pathLine.setLatLngs(pathCoords);
     }
   }
 
-  if (trip.active && trip.lastPos) {
-    const d = haversine(trip.lastPos, [pos.coords.latitude, pos.coords.longitude]);
-    trip.distance += d;
-    odometer += d;
-    localStorage.setItem('bikeOdo', odometer.toFixed(3));
-    document.getElementById('distVal').textContent = trip.distance.toFixed(1);
+  if (trip.active) {
+    if(trip.lastPos) {
+        const d = haversine(trip.lastPos, [pos.coords.latitude, pos.coords.longitude]);
+        trip.distance += d;
+        odometer += d;
+        localStorage.setItem('bikeOdo', odometer.toFixed(3));
+        document.getElementById('distVal').textContent = trip.distance.toFixed(1);
+    }
+    if (finalSpeed > trip.maxSpeed) {
+        trip.maxSpeed = finalSpeed;
+        document.getElementById('maxSpeedVal').textContent = Math.round(trip.maxSpeed);
+    }
+    trip.lastPos = [pos.coords.latitude, pos.coords.longitude]; 
   }
-  if (trip.active) { trip.lastPos = [pos.coords.latitude, pos.coords.longitude]; }
 }
 
-function onGPSError(err) {
-  setGPSStatus('error');
-  simulateGPS(); 
-}
-
-function setGPSStatus(state) {
-  const dot = document.getElementById('gpsDot'); const txt = document.getElementById('gpsStatus');
-  dot.className = 'gps-dot';
-  if (state === 'active') { dot.classList.add('active'); txt.textContent = t('gpsOn'); }
-  else if (state === 'error') { dot.classList.add('error'); txt.textContent = t('gpsErr'); }
-  else { txt.textContent = t('gpsWait'); }
-}
+function onGPSError(err) { document.getElementById('gpsDot').classList.remove('active'); simulateGPS(); }
 
 function haversine(a, b) {
   const R = 6371; 
@@ -491,14 +575,19 @@ function haversine(a, b) {
   return R * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1-x));
 }
 
-// ========== HAZARD ALERTS ==========
+// ========== DISMISSABLE HAZARD ALERTS ==========
 function checkHazards(lat, lon) {
     let alertTriggered = false;
     for(let h of safetyHazards) {
         let distKm = haversine([lat, lon], [h.lat, h.lon]);
         let distMeters = Math.round(distKm * 1000);
+        
         if(distMeters < 500 && distMeters > 20) {
-            showHazardAlert(h, distMeters); alertTriggered = true; break; 
+            if(!dismissedHazards.has(h.title)) {
+                showHazardAlert(h, distMeters); alertTriggered = true; break; 
+            }
+        } else if (distMeters > 550) {
+            dismissedHazards.delete(h.title);
         }
     }
     if(!alertTriggered) hideHazardAlert();
@@ -517,17 +606,19 @@ function showHazardAlert(hazard, distanceM) {
     alertBox.classList.add('show');
 }
 function hideHazardAlert() { document.getElementById('hazardAlert').classList.remove('show'); activeHazardAlert = null; }
+function dismissHazard() { if(activeHazardAlert) dismissedHazards.add(activeHazardAlert); hideHazardAlert(); }
 
 // ========== SIMULATION ==========
-let simSpeed = 0, simDir = 1; let simLat = 6.6483, simLon = 80.7011; 
+let simSpeed = 0, simDir = 1; let simLat = 6.6483, simLon = 80.7011; let simAlt = 500;
 function simulateGPS() {
-  setGPSStatus('active');
+  document.getElementById('gpsDot').classList.add('active');
   setInterval(() => {
-    let rawJumpySpeed = simSpeed + (Math.random() * 10 - 5);
+    let rawJumpySpeed = simSpeed + (Math.random() * 8 - 4); 
     simSpeed += simDir * (Math.random() * 2);
     if (simSpeed > 60) simDir = -1; if (simSpeed < 0) { simSpeed = 0; simDir = 1; }
     simLat += 0.00003; simLon += 0.00001;
-    currentPos = { coords: { latitude: simLat, longitude: simLon, accuracy: 10, speed: rawJumpySpeed / 3.6 } };
+    simAlt += (Math.random() * 2 - 1); // Simulate altitude change
+    currentPos = { coords: { latitude: simLat, longitude: simLon, altitude: simAlt, accuracy: 10, speed: Math.max(0, rawJumpySpeed) / 3.6 } };
     onGPSSuccess(currentPos); 
   }, 1000);
 }
@@ -563,18 +654,25 @@ async function fetchWeather() {
   if (!navigator.onLine) return;
   const lat = currentPos ? currentPos.coords.latitude : simLat; const lon = currentPos ? currentPos.coords.longitude : simLon;
   try {
-    const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code`);
+    const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,precipitation`);
     const d = await r.json(); const c = d.current;
     document.getElementById('mwTemp').textContent = `${Math.round(c.temperature_2m)}°C`;
+    
+    // Check Fog & Alerts
+    document.getElementById('alertFog').classList.toggle('show', c.weather_code === 45 || c.weather_code === 48);
+    document.getElementById('alertRain').classList.toggle('show', c.weather_code >= 51);
+
     let wDesc = "Clear"; let wIcon = "☀️";
     if (c.weather_code >= 1 && c.weather_code <= 3) { wDesc = "Cloudy"; wIcon = "⛅"; }
     else if (c.weather_code >= 51) { wDesc = "Rain"; wIcon = "🌧️"; }
+    else if (c.weather_code === 45 || c.weather_code === 48) { wDesc = "Fog"; wIcon = "🌫️"; }
+    
     document.getElementById('mwIcon').textContent = wIcon;
-    document.getElementById('mwDesc').textContent = lang==='si' ? (wDesc==="Clear"?'පැහැදිලි':wDesc==="Cloudy"?'වලාකුළු':'වර්ෂාව') : wDesc;
+    document.getElementById('mwDesc').textContent = lang==='si' ? (wDesc==="Clear"?'පැහැදිලි':wDesc==="Cloudy"?'වලාකුළු':wDesc==="Fog"?'මීදුම':'වර්ෂාව') : wDesc;
   } catch(e) { console.log("Weather failed"); }
 }
 
-drawTicks(); updateOnlineStatus(); startGPS();
+drawTicks(); updateOnlineStatus(); startGPS(); initBattery();
 </script>
 </body>
 </html>
