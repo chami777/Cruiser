@@ -21,9 +21,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+Sinhala:wght@300;400;600&family=Rajdhani:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
-/* ... (කලින් තිබුණු CSS සියල්ලම කිසිදු වෙනසක් නොමැතිව මෙහි ඇත) ... */
-:root { --bg-primary: #080c18; --bg-secondary: #0d1225; --bg-card: rgba(15, 20, 40, 0.85); --bg-card-hover: rgba(20, 28, 55, 0.95); --accent: #00e5ff; --accent2: #ff6b35; --accent3: #39ff14; --accent4: #bf5af2; --text-primary: #e8f4ff; --text-secondary: #7a9cc5; --text-muted: #3d5a7a; --border: rgba(0, 229, 255, 0.15); --border-bright: rgba(0, 229, 255, 0.5); --danger: #ff3b5c; --warning: #ffcc00; --success: #39ff14; --glow: 0 0 20px rgba(0, 229, 255, 0.3); --glow-strong: 0 0 40px rgba(0, 229, 255, 0.5); --shadow-deep: 0 8px 32px rgba(0,0,0,0.6); }
-.light-mode { --bg-primary: #e8edf5; --bg-secondary: #d5dce8; --bg-card: rgba(255, 255, 255, 0.9); --bg-card-hover: rgba(240, 245, 255, 0.98); --accent: #0066cc; --accent2: #e05a20; --accent3: #1a8a00; --accent4: #7b2fb5; --text-primary: #0a1628; --text-secondary: #3a5a8a; --text-muted: #7a9cc5; --border: rgba(0, 102, 204, 0.2); --border-bright: rgba(0, 102, 204, 0.5); --danger: #cc1a3a; --warning: #cc8800; --success: #1a8a00; --glow: 0 0 20px rgba(0, 102, 204, 0.2); --glow-strong: 0 0 40px rgba(0, 102, 204, 0.35); --shadow-deep: 0 8px 32px rgba(0,0,0,0.15); }
+/* CSS STYLES */
+:root { --bg-primary: #080c18; --bg-secondary: #0d1225; --bg-card: rgba(15, 20, 40, 0.85); --bg-card-hover: rgba(20, 28, 55, 0.95); --accent: #00e5ff; --accent2: #ff6b35; --accent3: #39ff14; --accent4: #bf5af2; --text-primary: #e8f4ff; --text-secondary: #7a9cc5; --text-muted: #3d5a7a; --border: rgba(0, 229, 255, 0.15); --border-bright: rgba(0, 229, 255, 0.5); --danger: #ff0044; --warning: #ffcc00; --success: #39ff14; --glow: 0 0 20px rgba(0, 229, 255, 0.3); --glow-strong: 0 0 40px rgba(0, 229, 255, 0.5); --shadow-deep: 0 8px 32px rgba(0,0,0,0.6); }
+.light-mode { --bg-primary: #e8edf5; --bg-secondary: #d5dce8; --bg-card: rgba(255, 255, 255, 0.9); --bg-card-hover: rgba(240, 245, 255, 0.98); --accent: #0066cc; --accent2: #e05a20; --accent3: #1a8a00; --accent4: #7b2fb5; --text-primary: #0a1628; --text-secondary: #3a5a8a; --text-muted: #7a9cc5; --border: rgba(0, 102, 204, 0.2); --border-bright: rgba(0, 102, 204, 0.5); --danger: #cc0033; --warning: #cc8800; --success: #1a8a00; --glow: 0 0 20px rgba(0, 102, 204, 0.2); --glow-strong: 0 0 40px rgba(0, 102, 204, 0.35); --shadow-deep: 0 8px 32px rgba(0,0,0,0.15); }
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 body { font-family: 'Rajdhani', sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; overflow-x: hidden; transition: all 0.4s ease; }
 body::before { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse at 20% 10%, rgba(0,229,255,0.06) 0%, transparent 50%), radial-gradient(ellipse at 80% 80%, rgba(191,90,242,0.05) 0%, transparent 50%); pointer-events: none; z-index: 0; }
@@ -35,15 +35,35 @@ body::before { content: ''; position: fixed; inset: 0; background: radial-gradie
 .btn-icon { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary); width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; transition: all 0.2s; }
 .btn-icon:hover, .btn-icon.active { background: var(--bg-card-hover); border-color: var(--accent); color: var(--accent); box-shadow: var(--glow); }
 .main { position: relative; z-index: 1; padding: 16px; max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; padding-bottom: 90px; }
-.hazard-alert { position: fixed; top: 70px; left: 16px; right: 16px; z-index: 1000; background: rgba(255, 59, 92, 0.95); border: 2px solid #fff; border-radius: 16px; padding: 16px; display: flex; align-items: center; gap: 16px; box-shadow: 0 10px 40px rgba(255, 59, 92, 0.6); transform: translateY(-150%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); backdrop-filter: blur(10px); }
-.hazard-alert.show { transform: translateY(0); animation: hazardPulse 1s infinite alternate; }
-@keyframes hazardPulse { from { box-shadow: 0 10px 40px rgba(255, 59, 92, 0.6); } to { box-shadow: 0 10px 60px rgba(255, 59, 92, 0.9); } }
-.hazard-icon { font-size: 40px; animation: wobble 2s infinite; }
-@keyframes wobble { 0%,100%{transform:rotate(-10deg);} 50%{transform:rotate(10deg);} }
+
+/* === IMPROVED HAZARD ALERT UI === */
+.hazard-alert {
+  position: fixed; top: 20px; left: 50%;
+  transform: translate(-50%, -150%);
+  width: 92%; max-width: 420px; z-index: 9999;
+  background: linear-gradient(135deg, rgba(255,0,68,0.95), rgba(139,0,0,0.95));
+  border: 2px solid #ff4d4d; border-radius: 20px; padding: 20px;
+  display: flex; align-items: center; gap: 16px;
+  box-shadow: 0 15px 40px rgba(255, 0, 68, 0.5);
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(15px);
+}
+.hazard-alert.show {
+  transform: translate(-50%, 0);
+  animation: pulseAlert 0.8s infinite alternate;
+}
+@keyframes pulseAlert {
+  from { box-shadow: 0 10px 30px rgba(255, 0, 68, 0.4); border-color: #ff4d4d; }
+  to { box-shadow: 0 10px 60px rgba(255, 0, 68, 0.9), inset 0 0 20px rgba(255,255,255,0.2); border-color: #fff; }
+}
+.hazard-icon { font-size: 45px; animation: wobble 1.5s infinite; filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); }
+@keyframes wobble { 0%,100%{transform:rotate(-15deg) scale(1);} 50%{transform:rotate(15deg) scale(1.1);} }
 .hazard-text { flex: 1; color: #fff; }
-.hazard-title { font-weight: 900; font-size: 18px; text-transform: uppercase; font-family: 'Orbitron', monospace; letter-spacing: 1px; }
-.hazard-sub { font-size: 14px; font-family: 'Noto Sans Sinhala', sans-serif; margin-top: 4px; }
-.hazard-dist { font-size: 16px; font-weight: 700; background: rgba(0,0,0,0.3); padding: 4px 10px; border-radius: 8px; font-family: monospace; }
+.hazard-title { font-weight: 900; font-size: 20px; text-transform: uppercase; font-family: 'Orbitron', monospace; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+.hazard-sub { font-size: 15px; font-family: 'Noto Sans Sinhala', sans-serif; margin-top: 4px; font-weight: 600; opacity: 0.9; }
+.hazard-dist { font-size: 20px; font-weight: 900; background: rgba(0,0,0,0.4); padding: 8px 14px; border-radius: 12px; font-family: 'Orbitron', monospace; color: #ffeb3b; border: 1px solid rgba(255,235,59,0.3); }
+
+/* SPEEDOMETER */
 .speed-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 24px; padding: 24px 20px; backdrop-filter: blur(20px); box-shadow: var(--shadow-deep); text-align: center; position: relative; overflow: hidden; }
 .speed-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(from 180deg at 50% 50%, transparent 60%, rgba(0,229,255,0.04) 80%, transparent 100%); animation: rotate 8s linear infinite; }
 @keyframes rotate { to { transform: rotate(360deg); } }
@@ -51,7 +71,7 @@ body::before { content: ''; position: fixed; inset: 0; background: radial-gradie
 .speed-display { position: relative; z-index: 1; margin: 10px 0; }
 .speed-number { font-family: 'Orbitron', monospace; font-size: clamp(72px, 22vw, 96px); font-weight: 900; color: var(--accent); line-height: 1; text-shadow: 0 0 30px rgba(0,229,255,0.6), 0 0 60px rgba(0,229,255,0.3); transition: color 0.3s, text-shadow 0.3s; }
 .speed-number.warn { color: var(--warning); text-shadow: 0 0 30px rgba(255,204,0,0.6); }
-.speed-number.danger { color: var(--danger); text-shadow: 0 0 30px rgba(255,59,92,0.6); animation: pulse 0.5s infinite alternate; }
+.speed-number.danger { color: var(--danger); text-shadow: 0 0 30px rgba(255,0,68,0.6); animation: pulse 0.5s infinite alternate; }
 @keyframes pulse { from { opacity: 1; } to { opacity: 0.7; } }
 .speed-unit { font-family: 'Orbitron', monospace; font-size: 16px; color: var(--text-secondary); letter-spacing: 2px; }
 .arc-wrap { position: relative; width: 200px; height: 110px; margin: 0 auto 8px; }
@@ -101,13 +121,7 @@ body::before { content: ''; position: fixed; inset: 0; background: radial-gradie
 .nav-item.active { color: var(--accent); }
 .nav-icon { font-size: 22px; }
 .si { font-family: 'Noto Sans Sinhala', sans-serif; }
-
-/* OFFLINE BADGE STYLING */
-#offlineBadge {
-  display: none; background: var(--danger); color: #fff; padding: 2px 6px; 
-  border-radius: 4px; font-size: 10px; font-weight: bold; font-family: 'Orbitron', monospace;
-  animation: pulse 2s infinite alternate; letter-spacing: 1px;
-}
+#offlineBadge { display: none; background: var(--warning); color: #000; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold; font-family: 'Orbitron', monospace; animation: pulse 2s infinite alternate; letter-spacing: 1px; }
 </style>
 </head>
 <body>
@@ -164,6 +178,14 @@ body::before { content: ''; position: fixed; inset: 0; background: radial-gradie
       <div class="stat-box"><div class="stat-icon">⏱️</div><div class="stat-value" id="timeVal">00:00</div><div class="stat-label">TIME</div></div>
       <div class="stat-box"><div class="stat-icon">📡</div><div class="stat-value" id="altVal">0</div><div class="stat-label">ALT m</div></div>
     </div>
+
+    <div class="trip-card" style="margin-top: 16px;">
+      <div class="btn-row">
+        <button class="btn-trip start" id="btnStart" onclick="startTrip()">▶ <span id="lblStart">Start Trip</span></button>
+        <button class="btn-trip stop" id="btnStop" onclick="stopTrip()" disabled>⏹ <span id="lblStop">Stop</span></button>
+        <button class="btn-trip reset" id="btnReset" onclick="resetTrip()">↺ <span id="lblRes">Reset</span></button>
+      </div>
+    </div>
   </div>
 
   <div id="sec-map" class="section">
@@ -206,7 +228,7 @@ function updateOnlineStatus() {
   if (navigator.onLine) {
     badge.style.display = 'none';
     if(currentPos && document.getElementById('mwDesc').textContent === 'Offline') {
-      fetchWeather(); // Try fetching weather again
+      fetchWeather(); 
     }
   } else {
     badge.style.display = 'block';
@@ -219,45 +241,43 @@ function updateOnlineStatus() {
 window.addEventListener('online', updateOnlineStatus);
 window.addEventListener('offline', updateOnlineStatus);
 
-// Register Service Worker for caching UI files
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('sw.js').catch(err => console.log('SW setup skipped/failed'));
   });
 }
 
-// ========== STATE ==========
+// ========== STATE & AUDIO ==========
 let lang = 'si';
 let darkMode = true;
 let gpsWatcher = null;
 let currentPos = null;
+let wakeLock = null;
 
-// Map & Routing
-let map = null;
-let mapMarker = null;
-let mapInitialized = false;
-let pathLine = null;
-let pathCoords = [];
-let routingControl = null;
-let navModeActive = false;
+let map = null, mapMarker = null, mapInitialized = false;
+let pathLine = null, pathCoords = [], routingControl = null, navModeActive = false;
 
-// Speed Accuracy (Smoothing)
 let smoothedSpeed = 0;
 const SPEED_SMOOTHING_FACTOR = 0.3; 
-
-let trip = { active: false, distance: 0 };
+let trip = { active: false, distance: 0, startTime: null, timerInterval: null };
 let odometer = parseFloat(localStorage.getItem('bikeOdo') || '0');
 
-// MOCK HAZARDS
+// NEW MOCK HAZARDS (Sri Lanka Context - Sharp Curves & Obstacles)
 const safetyHazards = [
-  { lat: 6.6495, lon: 80.7025, type: 'camera', title: 'SPEED CAMERA', si: 'වේග කැමරාවක් ඇත', icon: '📸' },
-  { lat: 6.6510, lon: 80.7040, type: 'curve', title: 'SHARP CURVE', si: 'අනතුරුදායක වංගුවකි', icon: '⚠️' }
+  { lat: 6.6495, lon: 80.7025, type: 'curve', title: 'SHARP CURVE', si: 'ඉදිරියෙන් තියුණු වංගුවකි', icon: '↪️' },
+  { lat: 6.6510, lon: 80.7040, type: 'hazard', title: 'ROAD HAZARD', si: 'මාර්ගයේ බාධකයක් ඇත', icon: '🚧' },
+  { lat: 6.6520, lon: 80.7050, type: 'bridge', title: 'NARROW BRIDGE', si: 'පටු පාලමක්', icon: '🌉' }
 ];
 let activeHazardAlert = null;
 
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+let audioCtx = null;
+function initAudio() {
+    if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+    if (audioCtx.state === 'suspended') { audioCtx.resume(); }
+}
+
 function playWarningBeep() {
-    if(audioCtx.state === 'suspended') audioCtx.resume();
+    if(!audioCtx) return; 
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.type = 'square';
@@ -269,26 +289,26 @@ function playWarningBeep() {
     osc.start(); osc.stop(audioCtx.currentTime + 0.3);
 }
 
+document.addEventListener('visibilitychange', async () => {
+  if (wakeLock !== null && document.visibilityState === 'visible' && trip.active) {
+    await requestWakeLock();
+  }
+});
+
+async function requestWakeLock() {
+  try {
+    if ('wakeLock' in navigator) { wakeLock = await navigator.wakeLock.request('screen'); }
+  } catch (err) { console.error('Wake Lock error:', err); }
+}
+
 // ========== TRANSLATIONS ==========
 const T = {
-  en: {
-    gpsWait:'Getting GPS...',gpsOn:'GPS Active', gpsErr:'GPS Error',
-    navModeOn: 'Tap map to set destination', navModeOff: '🗺️ Route',
-    searchLoc: 'Search location...', offlineMap: 'Internet required for map'
-  },
-  si: {
-    gpsWait:'GPS ලබා ගනිමින්...', gpsOn:'GPS ක්‍රියාකාරී', gpsErr:'GPS දෝෂය',
-    navModeOn: 'ගමනාන්තය සිතියමෙන් තෝරන්න', navModeOff: '🗺️ මාර්ගය',
-    searchLoc: 'ස්ථානය සොයන්න...', offlineMap: 'සිතියමට ඉන්ටර්නෙට් අවශ්‍යයි'
-  }
+  en: { gpsWait:'Getting GPS...',gpsOn:'GPS Active', gpsErr:'GPS Error', navModeOn: 'Tap map to set destination', navModeOff: '🗺️ Route', searchLoc: 'Search location...', offlineMap: 'Internet required for map' },
+  si: { gpsWait:'GPS ලබා ගනිමින්...', gpsOn:'GPS ක්‍රියාකාරී', gpsErr:'GPS දෝෂය', navModeOn: 'ගමනාන්තය සිතියමෙන් තෝරන්න', navModeOff: '🗺️ මාර්ගය', searchLoc: 'ස්ථානය සොයන්න...', offlineMap: 'සිතියමට ඉන්ටර්නෙට් අවශ්‍යයි' }
 };
 function t(key) { return T[lang][key] || key; }
 
-function toggleTheme() {
-  darkMode = !darkMode;
-  document.body.classList.toggle('light-mode', !darkMode);
-  document.getElementById('themeBtn').textContent = darkMode ? '🌙' : '☀️';
-}
+function toggleTheme() { darkMode = !darkMode; document.body.classList.toggle('light-mode', !darkMode); document.getElementById('themeBtn').textContent = darkMode ? '🌙' : '☀️'; }
 function toggleLang() {
   lang = lang === 'en' ? 'si' : 'en';
   document.getElementById('btnNavToggle').textContent = navModeActive ? t('navModeOn') : t('navModeOff');
@@ -298,20 +318,44 @@ function toggleLang() {
 
 function showSection(name) {
   ['speed','map'].forEach(s => {
-    let el = document.getElementById('sec-'+s);
-    if(el) el.classList.remove('active');
-    let nav = document.getElementById('nav-'+s);
-    if(nav) nav.classList.remove('active');
+    let el = document.getElementById('sec-'+s); if(el) el.classList.remove('active');
+    let nav = document.getElementById('nav-'+s); if(nav) nav.classList.remove('active');
   });
-  let sel = document.getElementById('sec-'+name);
-  if(sel) sel.classList.add('active');
-  let snav = document.getElementById('nav-'+name);
-  if(snav) snav.classList.add('active');
+  let sel = document.getElementById('sec-'+name); if(sel) sel.classList.add('active');
+  let snav = document.getElementById('nav-'+name); if(snav) snav.classList.add('active');
   
   if (name === 'map') {
     if (!mapInitialized) initMap();
     else { setTimeout(() => { if(map) map.invalidateSize(); centerMap(); }, 100); }
   }
+}
+
+// ========== TRIP & AUDIO INIT ==========
+function startTrip() {
+  initAudio(); 
+  requestWakeLock();
+  trip.active = true; trip.startTime = Date.now(); trip.distance = 0;
+  document.getElementById('btnStart').disabled = true; document.getElementById('btnStop').disabled = false;
+  trip.timerInterval = setInterval(updateTimer, 1000);
+}
+
+function stopTrip() {
+  if (!trip.active) return;
+  if (wakeLock !== null) { wakeLock.release().then(() => { wakeLock = null; }).catch(e => console.error(e)); }
+  trip.active = false; clearInterval(trip.timerInterval);
+  document.getElementById('btnStart').disabled = false; document.getElementById('btnStop').disabled = true;
+}
+
+function resetTrip() {
+  stopTrip(); trip.distance = 0;
+  document.getElementById('distVal').textContent = '0.0'; document.getElementById('timeVal').textContent = '00:00';
+}
+
+function updateTimer() {
+  if (!trip.startTime) return;
+  const s = Math.floor((Date.now() - trip.startTime) / 1000);
+  const m = Math.floor(s / 60); const sec = s % 60;
+  document.getElementById('timeVal').textContent = String(m).padStart(2,'0') + ':' + String(sec).padStart(2,'0');
 }
 
 // ========== MAP & ROUTING LOGIC ==========
@@ -345,23 +389,18 @@ function initMap() {
   setTimeout(() => map.invalidateSize(), 100);
 }
 
-function centerMap() {
-    if(map && currentPos) map.setView([currentPos.coords.latitude, currentPos.coords.longitude], 16);
-}
+function centerMap() { if(map && currentPos) map.setView([currentPos.coords.latitude, currentPos.coords.longitude], 16); }
 
 function toggleNavMode() {
     navModeActive = !navModeActive;
     const btn = document.getElementById('btnNavToggle');
-    if(navModeActive) {
-        btn.classList.add('active'); btn.textContent = t('navModeOn');
-    } else {
-        btn.classList.remove('active'); btn.textContent = t('navModeOff');
-    }
+    if(navModeActive) { btn.classList.add('active'); btn.textContent = t('navModeOn'); } 
+    else { btn.classList.remove('active'); btn.textContent = t('navModeOff'); }
 }
 
 function calculateRoute(destinationLatLng) {
     if (!currentPos || !map) return;
-    if (routingControl) map.removeControl(routingControl);
+    if (routingControl) { map.removeControl(routingControl); }
     
     document.getElementById('btnClearNav').style.display = 'block';
     navModeActive = false;
@@ -405,9 +444,7 @@ function onGPSSuccess(pos) {
   smoothedSpeed = (SPEED_SMOOTHING_FACTOR * rawSpeedKmh) + ((1 - SPEED_SMOOTHING_FACTOR) * smoothedSpeed);
   if (smoothedSpeed < 1) smoothedSpeed = 0;
 
-  if(!currentPos && navigator.onLine) {
-      currentPos = pos; fetchWeather(); // initial fetch
-  }
+  if(!currentPos && navigator.onLine) { currentPos = pos; fetchWeather(); }
   currentPos = pos;
   
   updateSpeed(smoothedSpeed);
@@ -423,6 +460,15 @@ function onGPSSuccess(pos) {
       pathCoords.push(latlng); if (pathLine) pathLine.setLatLngs(pathCoords);
     }
   }
+
+  if (trip.active && trip.lastPos) {
+    const d = haversine(trip.lastPos, [pos.coords.latitude, pos.coords.longitude]);
+    trip.distance += d;
+    odometer += d;
+    localStorage.setItem('bikeOdo', odometer.toFixed(3));
+    document.getElementById('distVal').textContent = trip.distance.toFixed(1);
+  }
+  if (trip.active) { trip.lastPos = [pos.coords.latitude, pos.coords.longitude]; }
 }
 
 function onGPSError(err) {
@@ -431,8 +477,7 @@ function onGPSError(err) {
 }
 
 function setGPSStatus(state) {
-  const dot = document.getElementById('gpsDot');
-  const txt = document.getElementById('gpsStatus');
+  const dot = document.getElementById('gpsDot'); const txt = document.getElementById('gpsStatus');
   dot.className = 'gps-dot';
   if (state === 'active') { dot.classList.add('active'); txt.textContent = t('gpsOn'); }
   else if (state === 'error') { dot.classList.add('error'); txt.textContent = t('gpsErr'); }
@@ -441,8 +486,7 @@ function setGPSStatus(state) {
 
 function haversine(a, b) {
   const R = 6371; 
-  const dLat = (b[0]-a[0])*Math.PI/180;
-  const dLon = (b[1]-a[1])*Math.PI/180;
+  const dLat = (b[0]-a[0])*Math.PI/180; const dLon = (b[1]-a[1])*Math.PI/180;
   const x = Math.sin(dLat/2)**2 + Math.cos(a[0]*Math.PI/180)*Math.cos(b[0]*Math.PI/180)*Math.sin(dLon/2)**2;
   return R * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1-x));
 }
@@ -475,15 +519,13 @@ function showHazardAlert(hazard, distanceM) {
 function hideHazardAlert() { document.getElementById('hazardAlert').classList.remove('show'); activeHazardAlert = null; }
 
 // ========== SIMULATION ==========
-let simSpeed = 0, simDir = 1;
-let simLat = 6.6483, simLon = 80.7011; 
+let simSpeed = 0, simDir = 1; let simLat = 6.6483, simLon = 80.7011; 
 function simulateGPS() {
   setGPSStatus('active');
   setInterval(() => {
     let rawJumpySpeed = simSpeed + (Math.random() * 10 - 5);
     simSpeed += simDir * (Math.random() * 2);
-    if (simSpeed > 60) simDir = -1;
-    if (simSpeed < 0) { simSpeed = 0; simDir = 1; }
+    if (simSpeed > 60) simDir = -1; if (simSpeed < 0) { simSpeed = 0; simDir = 1; }
     simLat += 0.00003; simLon += 0.00001;
     currentPos = { coords: { latitude: simLat, longitude: simLon, accuracy: 10, speed: rawJumpySpeed / 3.6 } };
     onGPSSuccess(currentPos); 
@@ -517,30 +559,22 @@ function drawTicks() {
   }
 }
 
-// WEATHER FETCH
 async function fetchWeather() {
-  if (!navigator.onLine) return; // Prevent fetch if offline
-  const lat = currentPos ? currentPos.coords.latitude : simLat;
-  const lon = currentPos ? currentPos.coords.longitude : simLon;
-  
+  if (!navigator.onLine) return;
+  const lat = currentPos ? currentPos.coords.latitude : simLat; const lon = currentPos ? currentPos.coords.longitude : simLon;
   try {
     const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code`);
     const d = await r.json(); const c = d.current;
-    
     document.getElementById('mwTemp').textContent = `${Math.round(c.temperature_2m)}°C`;
-    
     let wDesc = "Clear"; let wIcon = "☀️";
     if (c.weather_code >= 1 && c.weather_code <= 3) { wDesc = "Cloudy"; wIcon = "⛅"; }
     else if (c.weather_code >= 51) { wDesc = "Rain"; wIcon = "🌧️"; }
-    
     document.getElementById('mwIcon').textContent = wIcon;
     document.getElementById('mwDesc').textContent = lang==='si' ? (wDesc==="Clear"?'පැහැදිලි':wDesc==="Cloudy"?'වලාකුළු':'වර්ෂාව') : wDesc;
   } catch(e) { console.log("Weather failed"); }
 }
 
-drawTicks();
-updateOnlineStatus(); // Initial online/offline check
-startGPS();
+drawTicks(); updateOnlineStatus(); startGPS();
 </script>
 </body>
 </html>
