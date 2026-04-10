@@ -25,14 +25,19 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
+      # මේ කොටස අත්‍යවශ්‍යයි! (www ෆෝල්ඩරය සෑදීම)
+      - name: Prepare Web Directory
+        run: |
+          mkdir -p www
+          cp index.html www/
+          cp sw.js www/ || true
+
       - name: Install Capacitor
         run: |
           npm init -y
           npm install @capacitor/core @capacitor/android
           npm install -D @capacitor/cli
 
-      # මෙතනින් npx cap init ඉවත් කර ඇත, මන්ද අප දැන් capacitor.config.json සාදා ඇති බැවිනි
-      
       - name: Add Android Platform
         run: |
           npx cap add android
