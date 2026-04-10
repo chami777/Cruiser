@@ -1,8 +1,6 @@
 name: Build Android APK
 
 on:
-  push:
-    branches: [ "main" ]
   workflow_dispatch: 
 
 jobs:
@@ -27,22 +25,14 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Prepare Web Directory
-        run: |
-          mkdir -p www
-          cp index.html www/
-          cp sw.js www/
-
       - name: Install Capacitor
         run: |
           npm init -y
           npm install @capacitor/core @capacitor/android
           npm install -D @capacitor/cli
 
-      - name: Initialize Capacitor
-        run: |
-          npx cap init "Cruiser" "com.cruiser.app" --web-dir www
-
+      # මෙතනින් npx cap init ඉවත් කර ඇත, මන්ද අප දැන් capacitor.config.json සාදා ඇති බැවිනි
+      
       - name: Add Android Platform
         run: |
           npx cap add android
@@ -64,7 +54,7 @@ jobs:
               }
           }" >> android/build.gradle
 
-      - name: Sync and Copy Assets
+      - name: Sync Android
         run: |
           npx cap sync android
 
@@ -77,5 +67,5 @@ jobs:
       - name: Upload APK as Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Cruiser-App
+          name: Cruiser-App-Final
           path: android/app/build/outputs/apk/debug/app-debug.apk
