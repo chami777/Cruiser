@@ -32,7 +32,7 @@ body::before { content: ''; position: fixed; inset: 0; background: radial-gradie
 .light-mode .header { background: rgba(232, 237, 245, 0.92); }
 .header-logo { font-family: 'Orbitron', monospace; font-size: 18px; font-weight: 900; color: var(--accent); text-shadow: var(--glow); letter-spacing: 2px; }
 .header-logo span { color: var(--accent2); }
-.header-controls { display: flex; gap: 10px; align-items: center; }
+.header-controls { display: flex; gap: 8px; align-items: center; }
 
 /* Battery Indicator */
 .battery-bar { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--text-muted); font-family: 'Orbitron', monospace; font-weight: 600;}
@@ -40,6 +40,17 @@ body::before { content: ''; position: fixed; inset: 0; background: radial-gradie
 .btn-icon { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary); width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; transition: all 0.2s; }
 .btn-icon:hover, .btn-icon.active { background: var(--bg-card-hover); border-color: var(--accent); color: var(--accent); box-shadow: var(--glow); }
 .main { position: relative; z-index: 1; padding: 16px; max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; padding-bottom: 90px; }
+
+/* DEVELOPER INFO MODAL */
+.dev-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 10000; display: none; justify-content: center; align-items: center; backdrop-filter: blur(8px); padding: 20px;}
+.dev-modal.show { display: flex; animation: fadeIn 0.3s ease; }
+.dev-content { background: var(--bg-card); border: 1px solid var(--accent); padding: 24px; border-radius: 20px; text-align: center; width: 100%; max-width: 320px; box-shadow: var(--glow-strong); position: relative;}
+.dev-content h3 { font-family: 'Orbitron', monospace; color: var(--accent); margin-bottom: 16px; letter-spacing: 2px; font-size: 18px;}
+.dev-content p { font-size: 16px; margin: 10px 0; color: var(--text-primary); display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px;}
+.dev-content p strong { color: var(--text-secondary); }
+.btn-close-dev { background: var(--accent); color: #000; border: none; padding: 10px; width: 100%; border-radius: 10px; font-weight: 700; font-family: 'Rajdhani', sans-serif; margin-top: 15px; cursor: pointer; font-size: 16px; transition: 0.2s;}
+.btn-close-dev:hover { background: #fff; box-shadow: 0 0 15px var(--accent);}
+@keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
 
 /* HAZARD ALERT UI */
 .hazard-alert { position: fixed; top: 20px; left: 50%; transform: translate(-50%, -150%); width: 92%; max-width: 420px; z-index: 9999; background: linear-gradient(135deg, rgba(255,0,68,0.95), rgba(139,0,0,0.95)); border: 2px solid #ff4d4d; border-radius: 20px; padding: 16px 20px; display: flex; align-items: center; gap: 14px; box-shadow: 0 15px 40px rgba(255, 0, 68, 0.5); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); backdrop-filter: blur(15px); }
@@ -61,7 +72,7 @@ body::before { content: ''; position: fixed; inset: 0; background: radial-gradie
 .alert-banner.rain { background: rgba(0,100,255,0.15); border: 1px solid rgba(0,150,255,0.3); }
 .alert-banner.heat { background: rgba(255,100,0,0.15); border: 1px solid rgba(255,130,0,0.3); }
 .alert-banner.wind { background: rgba(100,200,255,0.15); border: 1px solid rgba(100,200,255,0.3); }
-.alert-banner.fog { background: rgba(150,150,150,0.15); border: 1px solid rgba(200,200,200,0.4); } /* FOG ALERT */
+.alert-banner.fog { background: rgba(150,150,150,0.15); border: 1px solid rgba(200,200,200,0.4); } 
 .alert-icon { font-size: 24px; }
 .alert-text { flex: 1; }
 .alert-title { font-weight: 600; color: var(--text-primary); }
@@ -101,6 +112,16 @@ canvas#altGraph { width: 100%; height: 60px; display: block; border-bottom: 1px 
 .stat-value { font-family: 'Orbitron', monospace; font-size: 18px; font-weight: 700; color: var(--accent); }
 .stat-label { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; margin-top: 2px; }
 .stat-sub { font-size: 10px; color: var(--text-secondary); margin-top: 2px; font-family: 'Noto Sans Sinhala', sans-serif; }
+
+/* TRIP CONTROLS */
+.trip-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 16px; backdrop-filter: blur(20px); }
+.btn-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.btn-trip { background: rgba(0,229,255,0.08); border: 1px solid var(--border-bright); color: var(--accent); padding: 12px 8px; border-radius: 12px; font-size: 13px; font-family: 'Rajdhani', sans-serif; font-weight: 600; cursor: pointer; transition: all 0.2s; text-align: center; }
+.btn-trip:hover { background: rgba(0,229,255,0.16); box-shadow: var(--glow); }
+.btn-trip.start { background: rgba(57,255,20,0.1); border-color: rgba(57,255,20,0.4); color: var(--success); }
+.btn-trip.stop { background: rgba(255,59,92,0.1); border-color: rgba(255,59,92,0.4); color: var(--danger); }
+.btn-trip.reset { background: rgba(255,204,0,0.1); border-color: rgba(255,204,0,0.4); color: var(--warning); }
+.btn-trip:disabled { opacity: 0.4; cursor: not-allowed; }
 
 .map-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow-deep); position: relative; }
 .map-header { padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
@@ -156,11 +177,22 @@ canvas#altGraph { width: 100%; height: 60px; display: block; border-bottom: 1px 
     <div class="battery-bar" id="batBar">
         <span id="batIcon">🔋</span><span id="batLevel">--%</span>
     </div>
-    <div class="gps-bar" style="padding:0;background:none;gap:6px; margin-right: 5px;">
+    <div class="gps-bar" style="padding:0;background:none;gap:4px; margin-right: 2px;">
       <div class="gps-dot" id="gpsDot"></div>
     </div>
+    <button class="btn-icon" title="Developer Info" onclick="showDevInfo()">ℹ️</button>
     <button class="btn-icon" id="langBtn" title="Language" onclick="toggleLang()">🌐</button>
     <button class="btn-icon" id="themeBtn" title="Dark/Light" onclick="toggleTheme()">🌙</button>
+  </div>
+</div>
+
+<div class="dev-modal" id="devModal">
+  <div class="dev-content">
+    <h3>DEVELOPER INFO</h3>
+    <p><strong>Name:</strong> <span>Chamalka</span></p>
+    <p><strong>Contact:</strong> <span>0768567788</span></p>
+    <p><strong>System:</strong> <span>Cruiser Pro v1.0</span></p>
+    <button class="btn-close-dev" onclick="closeDevInfo()">Close</button>
   </div>
 </div>
 
@@ -298,7 +330,7 @@ let smoothedSpeed = 0;
 let trip = { active: false, distance: 0, startTime: null, timerInterval: null, maxSpeed: 0 };
 let odometer = parseFloat(localStorage.getItem('bikeOdo') || '0');
 
-let altitudeHistory = []; // For Elevation Graph
+let altitudeHistory = []; 
 
 // MOCK HAZARDS
 const safetyHazards = [
@@ -348,6 +380,10 @@ function updateBat(bat) {
     document.getElementById('batBar').style.color = (level < 20 && !bat.charging) ? 'var(--danger)' : 'var(--text-muted)';
 }
 
+// ========== DEV INFO MODAL ==========
+function showDevInfo() { document.getElementById('devModal').classList.add('show'); }
+function closeDevInfo() { document.getElementById('devModal').classList.remove('show'); }
+
 // ========== TRANSLATIONS ==========
 const T = {
   en: { navModeOn: 'Tap map to set destination', navModeOff: '🗺️ Route', searchLoc: 'Search location...', offlineMap: 'Internet required for map', elev: 'ELEVATION' },
@@ -383,7 +419,7 @@ function showSection(name) {
 function startTrip() {
   initAudio(); requestWakeLock();
   trip.active = true; trip.startTime = Date.now(); trip.distance = 0; trip.maxSpeed = 0;
-  altitudeHistory = []; // Reset elevation graph
+  altitudeHistory = []; 
   document.getElementById('btnStart').disabled = true; document.getElementById('btnStop').disabled = false;
   trip.timerInterval = setInterval(updateTimer, 1000);
 }
@@ -414,8 +450,17 @@ function initMap() {
   map = L.map('map', { zoomControl: false, layers: [darkMap] }).setView([lat, lon], 16);
   L.control.layers({ "Dark Map": darkMap, "Street Map": streetMap, "Satellite": satelliteMap }, {}, {position: 'bottomleft'}).addTo(map);
 
+  // Sri Lanka Optimized Geocoder Search
   L.Control.geocoder({
-      position: 'topleft', defaultMarkGeocode: false, placeholder: t('searchLoc')
+      position: 'topleft', 
+      defaultMarkGeocode: false, 
+      placeholder: t('searchLoc'),
+      geocoder: L.Control.Geocoder.nominatim({
+          geocodingQueryParams: {
+              countrycodes: 'lk', // Restricts search to Sri Lanka
+              limit: 10 // Shows more suggestions
+          }
+      })
   }).on('markgeocode', function(e) {
       if(!navigator.onLine) return alert(t('offlineMap'));
       const center = e.geocode.center; map.setView(center, 16); calculateRoute(center); 
@@ -479,9 +524,9 @@ function getSmoothedSpeed(rawSpeed) {
 }
 
 function updateAltitudeGraph(alt) {
-    if(!alt || alt < -100 || alt > 9000) return; // sanity check
+    if(!alt || alt < -100 || alt > 9000) return; 
     altitudeHistory.push(alt);
-    if(altitudeHistory.length > 30) altitudeHistory.shift(); // Keep last 30 readings
+    if(altitudeHistory.length > 30) altitudeHistory.shift(); 
     document.getElementById('altGVal').textContent = Math.round(alt);
     drawAltitudeGraph();
 }
@@ -498,9 +543,8 @@ function drawAltitudeGraph() {
     const maxAlt = Math.max(...altitudeHistory, 100);
     const minAlt = Math.min(...altitudeHistory, 0);
     const range = (maxAlt - minAlt) || 1;
-    const stepX = w / (30 - 1); // Fixed width steps based on max items
+    const stepX = w / (30 - 1); 
     
-    // Draw fill
     ctx.beginPath();
     ctx.moveTo(0, h);
     altitudeHistory.forEach((alt, i) => {
@@ -512,7 +556,6 @@ function drawAltitudeGraph() {
     ctx.fillStyle = darkMode ? 'rgba(0, 229, 255, 0.15)' : 'rgba(0, 102, 204, 0.15)';
     ctx.fill();
 
-    // Draw Line
     ctx.beginPath();
     altitudeHistory.forEach((alt, i) => {
         const x = i * stepX;
@@ -617,7 +660,7 @@ function simulateGPS() {
     simSpeed += simDir * (Math.random() * 2);
     if (simSpeed > 60) simDir = -1; if (simSpeed < 0) { simSpeed = 0; simDir = 1; }
     simLat += 0.00003; simLon += 0.00001;
-    simAlt += (Math.random() * 2 - 1); // Simulate altitude change
+    simAlt += (Math.random() * 2 - 1); 
     currentPos = { coords: { latitude: simLat, longitude: simLon, altitude: simAlt, accuracy: 10, speed: Math.max(0, rawJumpySpeed) / 3.6 } };
     onGPSSuccess(currentPos); 
   }, 1000);
@@ -658,7 +701,6 @@ async function fetchWeather() {
     const d = await r.json(); const c = d.current;
     document.getElementById('mwTemp').textContent = `${Math.round(c.temperature_2m)}°C`;
     
-    // Check Fog & Alerts
     document.getElementById('alertFog').classList.toggle('show', c.weather_code === 45 || c.weather_code === 48);
     document.getElementById('alertRain').classList.toggle('show', c.weather_code >= 51);
 
