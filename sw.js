@@ -1,34 +1,47 @@
-const CACHE_NAME = 'cruiser-pro-v1.2';
-const ASSETS_TO_CACHE = [
-  '/',
-  '/index.html',
-  'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css',
-  'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js',
-  'https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css',
-  'https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js',
-  'https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css',
-  'https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js',
-  'https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+Sinhala:wght@300;400;600&family=Rajdhani:wght@400;500;600&display=swap'
-];
+const CACHE_NAME = 'cruiser-pro-v7';
 
+// Install වෙද්දී එකපාරම Active වෙන්න
 self.addEventListener('install', event => {
+  self.skipWaiting();
+});
+
+// පරණ Cache ෆයිල් තියෙනවා නම් මකා දාලා අලුත් එකට ඉඩ දීම
+self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        console.log('Opened cache');
-        return cache.addAll(ASSETS_TO_CACHE);
-      })
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cache => {
+          if (cache !== CACHE_NAME) {
+            return caches.delete(cache);
+          }
+        })
+      );
+    })
   );
 });
 
+// Dynamic Caching (ඉන්ටර්නෙට් තියෙද්දී සේව් කරගෙන, නැතිවෙලාවට පාවිච්චි කිරීම)
 self.addEventListener('fetch', event => {
+  // කාලගුණ දත්ත (Weather API) සහ අනවශ්‍ය දේවල් සේව් කරන්නේ නැහැ
+  if (event.request.url.includes('api.open-meteo.com')) {
+    return;
+  }
+
   event.respondWith(
-    caches.match(event.request)
+    fetch(event.request)
       .then(response => {
-        if (response) { return response; }
-        return fetch(event.request).catch(() => {
-            console.log("Offline: Cannot fetch " + event.request.url);
-        });
+        // ඉන්ටර්නෙට් තියෙනවා නම්, අලුත් දත්ත අරන් Cache එකට දානවා
+        if (response && response.status === 200 && (response.type === 'basic' || response.type === 'cors')) {
+          const responseClone = response.clone();
+          caches.open(CACHE_NAME).then(cache => {
+            cache.put(event.request, responseClone);
+          });
+        }
+        return response;
+      })
+      .catch(() => {
+        // ඉන්ටර්නෙට් නැත්නම් (Offline නම්) සේව් වෙලා තියෙන දත්ත පෙන්වනවා
+        return caches.match(event.request);
       })
   );
 });
